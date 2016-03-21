@@ -1,23 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   includes/fdf.h                                     :+:      :+:    :+:   */
+/*   src/parse.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/03/14 20:39:45 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/03/15 15:10:11 by lpoujade         ###   ########.fr       */
+/*   Created: 2016/03/15 14:46:42 by lpoujade          #+#    #+#             */
+/*   Updated: 2016/03/15 15:54:29 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H 
+#include "fdf.h"
 
-typedef struct		s_mlx_datas
+int		*parse_file(char *file)
 {
-	void			*ident;
-	void			*wndw;
-	void			*next_img;
-}					t_mlx_datas;
+	int		fd;
+	char	*line;
+	int		count;
+	int		i;
+	int		*tab;
 
-#endif
+	if ((fd = open(file, O_RDONLY)) < 1)
+		return (-1);
+	y = 0;
+	while (get_next_line(fd, &line))
+	{
+		while (line[i])
+		{
+			if (line[i] != ' ' || !ft_isdigit(line[i]))
+				break ;
+			if (line[i] == ' ')
+				count++;
+			else
+				ft_atoi;
+			i++;
+		}
+		y++;
+	}
+}

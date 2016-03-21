@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/03/14 20:51:46 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/03/15 15:28:25 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,32 @@
 #include "libft.h"
 #include "fdf.h"
 
-static int	key_event(int key, t_mlx_datas con)
+static void	usage(void)
 {
-	ft_putnbr(key);ft_putchar('\n');
+	ft_putendl("Usage : fdf <map file>");
+	exit (0);
+}
+
+static int	key_event(int key, void *infos)
+{
+	t_mlx_datas	*con;
+	con = (t_mlx_datas *)infos;
 	if (key == 53)
 	{
-		ft_putendl("CLOSING");
-		mlx_destroy_window(con.ident, con.wndw);
+		mlx_destroy_window(con->ident, con->wndw);
+		exit (1);
 	}
 	return (0);
 }
 
 int		main(int ac, char **av)
 {
-	(void)av; (void)ac;
 	t_mlx_datas		connection;
 
+	if (ac < 2)
+		usage();
 	connection.ident = mlx_init();
+	parse_file(av[1])
 	connection.wndw = mlx_new_window(connection.ident, 200, 200, "Hello World?");
 	mlx_key_hook(connection.wndw, key_event, (void*)&connection);
 	mlx_loop(connection.ident);
