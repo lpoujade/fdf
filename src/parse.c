@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 14:46:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/03/15 15:54:29 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/08 16:44:59 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,26 @@ int		*parse_file(char *file)
 {
 	int		fd;
 	char	*line;
-	int		count;
-	int		i;
-	int		*tab;
+	int		i, j;
+	int		*x, *y;
 
 	if ((fd = open(file, O_RDONLY)) < 1)
-		return (-1);
-	y = 0;
+		return (NULL);
 	while (get_next_line(fd, &line))
 	{
-		while (line[i])
+		if (ft_strlen(line) != i)
+			return (NULL);
+		i = 0; j = 0;
+		while (line[i + j])
 		{
-			if (line[i] != ' ' || !ft_isdigit(line[i]))
-				break ;
-			if (line[i] == ' ')
-				count++;
-			else
-				ft_atoi;
-			i++;
+			while (line[i + j] == ' ')
+				if (line[i + j + 1])
+					j++;
+			x = ft_atoi(line[i + j]);
+			y = i;
+			x++;
+			y++;
 		}
-		y++;
 	}
+	return ();
 }

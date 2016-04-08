@@ -6,12 +6,10 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/03/15 15:28:25 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/08 16:10:30 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mlx.h>
-#include "libft.h"
 #include "fdf.h"
 
 static void	usage(void)
@@ -34,12 +32,18 @@ static int	key_event(int key, void *infos)
 
 int		main(int ac, char **av)
 {
+	(void)av;
 	t_mlx_datas		connection;
+	int		*pts;
 
 	if (ac < 2)
 		usage();
 	connection.ident = mlx_init();
-	parse_file(av[1])
+	if (!(pts = parse_file(av[1])))
+	{
+		ft_putendl("Wrong file");
+		exit(1);
+	}
 	connection.wndw = mlx_new_window(connection.ident, 200, 200, "Hello World?");
 	mlx_key_hook(connection.wndw, key_event, (void*)&connection);
 	mlx_loop(connection.ident);

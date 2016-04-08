@@ -6,7 +6,7 @@
 #    By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/11 13:41:06 by lpoujade          #+#    #+#              #
-#    Updated: 2016/03/14 20:35:47 by lpoujade         ###   ########.fr        #
+#    Updated: 2016/04/08 15:54:11 by lpoujade         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ LDLIBS=-lft -lmlx -framework OpenGL -framework AppKit
 
 LIB=libft/libft.a
 
-SRC=fdf.c
+SRC=fdf.c parse.c
 OBJ=$(SRC:.c=.o)
 
 SRCS=$(addprefix $(SRCDIR)/,$(SRC))
