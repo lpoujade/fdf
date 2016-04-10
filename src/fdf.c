@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/09 19:23:04 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/10 17:58:07 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,36 @@ static inline void	pix_img(char *addr)
 	*(addr + 3) = 0;
 }
 
+int		line(int *coord, int *dim, t_pixel *first)
+{
+	int x = coord[0], y = coord[1], ex = coord[2], ey = coord[3];
+	int tmp;
+	if (x > ex)
+	{
+		tmp = x;
+		x = ex;
+		ex = tmp;
+		tmp = y;
+		y = ey;
+	 	ey = y;
+	}
+	while (x <= ex)
+	{
+		pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
+		if (x < ex)
+			x++;
+		if (y < ey)
+			y++;
+		else if (y > ey)
+			y--;
+		if (x > dim[0] || y > dim[1])
+			return (1);
+		if (x == ex && y == ey)
+			break ;
+	}
+	return (0);
+}
+
 void	*draw_img(void *img)
 {
 	int		bpp, size_line, endianess;
@@ -52,14 +82,11 @@ void	*draw_img(void *img)
 
 	ft_putendl("MLX -- mlx_get_data_addr");
 	addr = mlx_get_data_addr(img, &bpp, &size_line, &endianess);
-	addr += 100*size_line;
-	size_line /= 4;
 
-	while (size_line--)
-	{
-		pix_img(addr);
-		addr += bpp / 8;
-	}
+	int coord[4] = {200, 200, 254, 312}, dim[2] = {400, 400};
+	if (line(coord, dim, (t_pixel*)addr))
+		ft_putendl("fail");
+
 	return (img);
 }
 
