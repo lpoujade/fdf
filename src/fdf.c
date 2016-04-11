@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/10 17:58:07 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/11 17:09:29 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static inline void	pix_img(char *addr)
 int		line(int *coord, int *dim, t_pixel *first)
 {
 	int x = coord[0], y = coord[1], ex = coord[2], ey = coord[3];
+	int xf, yf;
 	int tmp;
 	if (x > ex)
 	{
@@ -56,17 +57,36 @@ int		line(int *coord, int *dim, t_pixel *first)
 		ex = tmp;
 		tmp = y;
 		y = ey;
-	 	ey = y;
+	 	ey = tmp;
+	}
+	yf = y; xf = x;
+	while (x == ex)
+	{
+		pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
+		if (y > ey)
+			y--;
+		else if (y < ey)
+			y++;
+		else
+			return (0);
+	}
+	while (y == ey)
+	{
+		pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
+		if (x > ex)
+			x--;
+		else if (x < ex)
+			x++;
+		else
+			return (0);
 	}
 	while (x <= ex)
 	{
 		pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
 		if (x < ex)
 			x++;
-		if (y < ey)
-			y++;
-		else if (y > ey)
-			y--;
+		y = yf + ((ey - yf) * (x - xf))/(ex - xf);
+
 		if (x > dim[0] || y > dim[1])
 			return (1);
 		if (x == ex && y == ey)
@@ -83,16 +103,15 @@ void	*draw_img(void *img)
 	ft_putendl("MLX -- mlx_get_data_addr");
 	addr = mlx_get_data_addr(img, &bpp, &size_line, &endianess);
 
-	int coord[4] = {200, 200, 254, 312}, dim[2] = {400, 400};
+	int coord[4] = {200, 200, 0, 0}, dim[2] = {800, 800};
 	if (line(coord, dim, (t_pixel*)addr))
 		ft_putendl("fail");
-
 	return (img);
 }
 
 int		main(int ac, char **av)
 {
-	(void)av; int width = 400, height = 400;
+	(void)av; int width = 800, height = 800;
 	t_mlx_datas		connection;
 
 	if (ac < 2)
