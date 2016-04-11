@@ -97,6 +97,11 @@ int		main(int ac, char **av)
 
 	if (ac < 2)
 		usage();
+	parse_file(
+
+return (0);
+
+
 	connection.ident = mlx_init();
 	ft_putendl("MLX -- init");
 	connection.wndw = mlx_new_window(connection.ident, width, height, "Hello World?");
