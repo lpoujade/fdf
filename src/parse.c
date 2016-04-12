@@ -10,32 +10,65 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+//ft_putnbr(ft_atoi(line)); ft_putstr(ft_atoi(line) >= 10 ? " " : "  ");
+////#include "fdf.h"
+#include <fcntl.h>
+#include "libft.h"
 
-int		*parse_file(char *file)
+int		dispatch_nums(char *line, int **tab);
+
+/*
+** A(x, y, z) = (tab[x][A], tab[y][A], tab[z][A])
+*/
+
+int		parse_file(char *file, int ***otab)
 {
 	int		fd;
 	char	*line;
-	int		i, j;
-	int		*x, *y;
+	int		tsize = 0;
+	int		y = 0;
+	int		**tab;
 
-	if ((fd = open(file, O_RDONLY)) < 1)
-		return (NULL);
+	if (!(tab = (int**)malloc(3 * sizeof(int*))))
+		return (-1);
+	*otab = tab;
+	tab[1] = NULL;
+	if ((fd = open(file, O_RDONLY)) < 0)
+		return (-1);
 	while (get_next_line(fd, &line))
 	{
-		if (ft_strlen(line) != i)
-			return (NULL);
-		i = 0; j = 0;
-		while (line[i + j])
+		ft_putnbr(tsize = dispatch_nums(line, tab)); ft_putchar('\n');
+		if (!tab[1])
+			if (!(tab[1] = (int*)malloc(tsize * sizeof(int))))
+				return (-1);
+		tab[1][y] = y;
+		y++;
+		if (y >= tsize)
 		{
-			while (line[i + j] == ' ')
-				if (line[i + j + 1])
-					j++;
-			x = ft_atoi(line[i + j]);
-			y = i;
-			x++;
-			y++;
+			ft_putendl("---------------- N O P ---------------- ");
+			exit (12);
 		}
 	}
-	return ();
+	return (y * y);
+}
+
+int		dispatch_nums(char *line, int **tab)
+{
+	int		c;
+
+	c = 0;
+	if (!(tab[2] = (int*)malloc(200 * sizeof(int)))
+			|| !(tab[0] = (int*)malloc(200 * sizeof(int))))
+		return (-1);
+	while (*line)
+	{
+		tab[0][c] = c;
+		tab[2][c] = ft_atoi(line);
+		line += ft_getndigits(ft_atoi(line));
+		while (*line && *line == ' ')
+			line++;
+		line ? line++ : 0;
+		c++;
+	}
+	return (c);
 }
