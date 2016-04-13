@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/11 19:18:17 by liums             #+#    #+#             */
-/*   Updated: 2016/04/11 19:18:17 by liums            ###   ######## fr       */
+/*   Updated: 2016/04/13 17:53:58 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int ac, char **av)
 
 	if (!(count = parse_file(av[1], &tab)))
 		ft_putendl("fail");
+
 	while (c < count)
 	{
 		//ft_putnbr(count);ft_putstr("\t:");
