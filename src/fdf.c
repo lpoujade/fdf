@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/11 17:09:29 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/13 21:00:02 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,8 @@ int		main(int ac, char **av)
 
 	if (ac < 2)
 		usage();
-	parse_file(
 
-return (0);
+//return (0);
 
 
 	connection.ident = mlx_init();
