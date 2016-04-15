@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/13 21:00:02 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/15 16:27:13 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,82 +31,10 @@ static int	key_event(int key, void *infos)
 	if (key == 49)
 	{
 		ft_putendl("KEY -- space -- putting new image");
-		draw_img(con->next_img);
+		draw_img(con->next_img, con->file);
 		mlx_put_image_to_window(con->ident, con->wndw, con->next_img, 0, 0);
 	}
 	return (0);
-}
-
-static inline void	pix_img(char *addr)
-{
-	*addr = 0xff;
-	*(addr + 1) = 0xff;
-	*(addr + 2) = 0xff;
-	*(addr + 3) = 0;
-}
-
-int		line(int *coord, int *dim, t_pixel *first)
-{
-	int x = coord[0], y = coord[1], ex = coord[2], ey = coord[3];
-	int xf, yf;
-	int tmp;
-	if (x > ex)
-	{
-		tmp = x;
-		x = ex;
-		ex = tmp;
-		tmp = y;
-		y = ey;
-	 	ey = tmp;
-	}
-	yf = y; xf = x;
-	while (x == ex)
-	{
-		pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
-		if (y > ey)
-			y--;
-		else if (y < ey)
-			y++;
-		else
-			return (0);
-	}
-	while (y == ey)
-	{
-		pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
-		if (x > ex)
-			x--;
-		else if (x < ex)
-			x++;
-		else
-			return (0);
-	}
-	while (x <= ex)
-	{
-		pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
-		if (x < ex)
-			x++;
-		y = yf + ((ey - yf) * (x - xf))/(ex - xf);
-
-		if (x > dim[0] || y > dim[1])
-			return (1);
-		if (x == ex && y == ey)
-			break ;
-	}
-	return (0);
-}
-
-void	*draw_img(void *img)
-{
-	int		bpp, size_line, endianess;
-	char	*addr;
-
-	ft_putendl("MLX -- mlx_get_data_addr");
-	addr = mlx_get_data_addr(img, &bpp, &size_line, &endianess);
-
-	int coord[4] = {200, 200, 0, 0}, dim[2] = {800, 800};
-	if (line(coord, dim, (t_pixel*)addr))
-		ft_putendl("fail");
-	return (img);
 }
 
 int		main(int ac, char **av)
@@ -116,9 +44,7 @@ int		main(int ac, char **av)
 
 	if (ac < 2)
 		usage();
-
-//return (0);
-
+	connection.file = av[1];
 
 	connection.ident = mlx_init();
 	ft_putendl("MLX -- init");

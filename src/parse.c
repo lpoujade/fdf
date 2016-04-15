@@ -6,20 +6,12 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 14:46:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/15 12:52:08 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/15 16:34:12 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-////#include "fdf.h"
+#include "fdf.h"
 #include <fcntl.h>
-#include "libft.h"
-
-typedef struct		s_coords
-{
-	int				x;
-	int				y;
-	int				z;
-}					t_coords;
 
 static inline void	resize(t_coords **tab, size_t *act_size, size_t nsize)
 {
@@ -72,5 +64,6 @@ int					parse_file(char *file, t_coords **tab)
 		vars.y++;
 	}
 	close(fd);
-	return (vars.y * vars.x); // WRONG (max x)
+	return (100);
+	//return (vars.y * vars.x); // WRONG (max x)
 }
