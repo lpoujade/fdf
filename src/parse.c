@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 14:46:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/14 22:00:53 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/15 12:52:08 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,10 @@ int					parse_file(char *file, t_coords **tab)
 			(*tab)[vars.z].y = vars.y;
 			(*tab)[vars.z].z = ft_atoi(line);
 			line += ft_getndigits((*tab)[vars.z].z);
-			while (*(line++) && !(ft_isdigit(*line) && *(line - 1) == ' '))
-				;
+			*line ? line++ : 0;
+			while (*line && !((ft_isdigit(*line) || *line == '-')
+						&& ((*(line - 1) == ' ') || *(line + 1) == ' ')))
+				line++;
 			vars.x++;
 			if (++vars.z >= (int)ts)
 				resize(tab, &ts, ts * 2);
