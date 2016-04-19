@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/19 11:45:15 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/19 17:05:59 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,20 @@
 	if (line(coord, dim, (t_pixel*)addr))
 		ft_putendl("out of screen");
 		*/
+	/*
+	t_pixel	*p;
+	p = (t_pixel*)addr;
+	*p = 0xffffff00;
+	*/
 
 #include "fdf.h"
 
 static inline void	pix_img(char *addr)
 {
-	t_pixel	*p;
-	p = (t_pixel*)addr;
-	*p = 0xffffff00;
-	/*
 	*addr = 0xff;
 	*(addr + 1) = 0xff;
 	*(addr + 2) = 0xff;
 	*(addr + 3) = 0;
-	*/
 }
 
 static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
@@ -50,7 +50,7 @@ static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
 	if (x == ex)
 		while (y != ey && y > 0)
 		{
-			if (y > dim[1] || x > dim[0] || y < 1 || x < 1)
+			if (y > dim[1] || x > dim[0] || y < 0 || x < 0)
 				return (1);
 			pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
 			y > ey ? y-- : y++;
@@ -58,7 +58,7 @@ static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
 	else if (y == ey)
 		while (x != ex && x > 0)
 		{
-			if (y > dim[1] || x > dim[0])
+			if (y > dim[1] || x > dim[0] || y < 0 || x < 0)
 				return (1);
 			pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
 			x > ex ? x-- : x++;
@@ -104,7 +104,7 @@ int					line(int const *coord, int *dim, t_pixel *first)
 		pix_img((char*)first + ((xp.x * 4) + (dim[1] * (yp.x * 4))));			// 4 -> mlx bpp
 		yp.x = yp.z + ((yp.y - yp.z) * (xp.x - xp.z))/(xp.y - xp.z);
 		xp.x++;
-		if (xp.x > dim[0] || yp.x > dim[1])
+		if (yp.x > dim[1] || xp.x > dim[0] || yp.x < 0 || xp.x < 0)
 			return (1);
 		if (xp.x == xp.y && yp.x == yp.y)
 			break ;
@@ -129,15 +129,15 @@ void				*draw_img(void *img, char *filename, int *dims)
 	ft_putendl("PARSING -- parsed");
 	while (c + 1 < size)
 	{
-		coord[0] = pts[c].x * 100 + 10;
-		coord[1] = pts[c].y * 100 + 10;
-		coord[2] = (c + 1 <= size ? (pts[c + 1].x * 100 + 10) : 0);
-		coord[3] = (c + 1 <= size ? (pts[c + 1].y * 100 + 10) : 0);
-		if (coord[2] > 10)
+		coord[0] = (pts[c].x * dims[0]) / 100 ;
+		coord[1] = (pts[c].y * dims[1]) / 100 ;
+		coord[2] = (pts[c + 1].x * dims[0])/100 ;
+		coord[3] = (pts[c + 1].y * dims[1])/100 ;
+		if (coord[2] > 1)
 			if (line(coord, dims, (t_pixel*)addr))
 				ft_putendl("out of screen");
-		coord[2] = c + size/2 <= size ? pts[c + size/2].x * 100 + 10 : coord[0];
-		coord[3] = c + size/2 <= size ? pts[c + size/2].y * 100 + 10 : coord[1];
+		coord[2] = c + size/2 < size ? (pts[c + size/2].x * dims[0])/100  : coord[0];
+		coord[3] = c + size/2 < size ? (pts[c + size/2].y * dims[1])/100  : coord[1];
 		if (line(coord, dims, (t_pixel*)addr))
 			ft_putendl("out of screen");
 		c++;

@@ -6,7 +6,7 @@
 #    By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/11 13:41:06 by lpoujade          #+#    #+#              #
-#    Updated: 2016/04/19 11:25:16 by lpoujade         ###   ########.fr        #
+#    Updated: 2016/04/19 16:32:31 by lpoujade         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,9 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 $(LIB):
 	make -C libft/
+
+parser: parse_fdf
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) mini.c src/parse.c -o parse_fdf
 
 clean:
 	-@rm $(OBJS) && echo "deleting" $(OBJS)

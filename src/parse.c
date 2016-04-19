@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 14:46:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/19 10:03:05 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/19 16:35:29 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ static inline void	resize(t_coords **tab, size_t *act_size, size_t nsize)
 	if (!(new = malloc(nsize * sizeof(t_coords))))
 		exit(12);
 	ft_memcpy(new, *tab, *act_size);
-	ft_swap(tab, &new);
-	free(new);
+	//ft_swap(tab, &new);
+	*tab = new;
+	//free(new);
 	*act_size = nsize;
 }
 
@@ -40,7 +41,7 @@ int					parse_file(char *file, t_coords **tab)
 	size_t			ts;
 	int				mx;
 
-	ts = 200;
+	ts = 10000;
 	vars.z = 0;
 	vars.y = 0;
 	mx = 0;
