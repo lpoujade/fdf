@@ -6,7 +6,7 @@
 #    By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/11 13:41:06 by lpoujade          #+#    #+#              #
-#    Updated: 2016/04/15 13:13:04 by lpoujade         ###   ########.fr        #
+#    Updated: 2016/04/19 11:25:16 by lpoujade         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ OBJDIR=./.obj
 
 CC=clang
 CPPFLAGS=-Iincludes/ -Ilibft/includes
-CFLAGS=-Wall -Werror -Wextra
+CFLAGS=-Wall -Werror -Wextra -g
 
 LDFLAGS=-Llibft/
 LDLIBS=-lft -lmlx -framework OpenGL -framework AppKit

@@ -6,18 +6,34 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/15 17:03:43 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/19 11:45:15 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+	/*
+	ft_putstr("x : ");
+	get_next_line(0, &lne);
+	coord[2] = ft_atoi(lne);
+	ft_putstr("y : ");
+	get_next_line(0, &lne);
+	coord[3] = ft_atoi(lne);
+	if (line(coord, dim, (t_pixel*)addr))
+		ft_putendl("out of screen");
+		*/
 
 #include "fdf.h"
 
 static inline void	pix_img(char *addr)
 {
+	t_pixel	*p;
+	p = (t_pixel*)addr;
+	*p = 0xffffff00;
+	/*
 	*addr = 0xff;
 	*(addr + 1) = 0xff;
 	*(addr + 2) = 0xff;
 	*(addr + 3) = 0;
+	*/
 }
 
 static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
@@ -47,6 +63,8 @@ static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
 			pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
 			x > ex ? x-- : x++;
 		}
+	else
+		pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
 	return (0);
 }
 
@@ -79,61 +97,50 @@ int					line(int const *coord, int *dim, t_pixel *first)
 	yp.z = yp.x;
 	xp.z = xp.x;
 	if (yp.x == yp.y || xp.x == xp.y)
-	{
 		if (vh_lines(coord, dim, first))
 			return (1);
+	while (xp.x <= xp.y && !(yp.x == yp.y || xp.x == xp.y))
+	{
+		pix_img((char*)first + ((xp.x * 4) + (dim[1] * (yp.x * 4))));			// 4 -> mlx bpp
+		yp.x = yp.z + ((yp.y - yp.z) * (xp.x - xp.z))/(xp.y - xp.z);
+		xp.x++;
+		if (xp.x > dim[0] || yp.x > dim[1])
+			return (1);
+		if (xp.x == xp.y && yp.x == yp.y)
+			break ;
 	}
-	else
-		while (xp.x <= xp.y && yp.x != yp.y)
-		{
-			pix_img((char*)first + ((xp.x * 4) + (dim[1] * (yp.x * 4))));			// 4 -> mlx bpp
-			yp.x = yp.z + ((yp.y - yp.z) * (xp.x - xp.z))/(xp.y - xp.z);
-			xp.x++;
-			if (xp.x > dim[0] || yp.x > dim[1])
-				return (1);
-			if (xp.x == xp.y && yp.x == yp.y)
-				break ;
-		}
 	return (0);
 }
 
-void				*draw_img(void *img, char *filename)
+void				*draw_img(void *img, char *filename, int *dims)
 {
 	int		bpp, size_line, endianess;
 	char	*addr;
 	int		coord[4];
 	t_coords *pts;
 	int		size, c = 0;
-	int		dim[2] = {800, 800};
 
 	ft_putendl("MLX -- mlx_get_data_addr");
 	addr = mlx_get_data_addr(img, &bpp, &size_line, &endianess);
-
-	ft_putstr("PARSING -- start with "); ft_putendl(filename);
+	ft_putstr("PARSING -- ");
+   	ft_putendl(filename);
 	if ((size = parse_file(filename, &pts)) < 0)
-		exit (12);
+		exit (13);
 	ft_putendl("PARSING -- parsed");
-
-	while (c < size)
+	while (c + 1 < size)
 	{
-		coord[0] = pts[c].x * 10;
-		coord[1] = pts[c].y * 10;
-		coord[2] = (c + 1 < size ? (pts[c + 1].x * 10) : coord[0]);
-		coord[3] = (c + 1 < size ? (pts[c + 1].y * 10) : coord[1]);
-		if (line(coord, dim, (t_pixel*)addr))
+		coord[0] = pts[c].x * 100 + 10;
+		coord[1] = pts[c].y * 100 + 10;
+		coord[2] = (c + 1 <= size ? (pts[c + 1].x * 100 + 10) : 0);
+		coord[3] = (c + 1 <= size ? (pts[c + 1].y * 100 + 10) : 0);
+		if (coord[2] > 10)
+			if (line(coord, dims, (t_pixel*)addr))
+				ft_putendl("out of screen");
+		coord[2] = c + size/2 <= size ? pts[c + size/2].x * 100 + 10 : coord[0];
+		coord[3] = c + size/2 <= size ? pts[c + size/2].y * 100 + 10 : coord[1];
+		if (line(coord, dims, (t_pixel*)addr))
 			ft_putendl("out of screen");
 		c++;
 	}
-	/*
-	ft_putstr("x : ");
-	get_next_line(0, &lne);
-	coord[2] = ft_atoi(lne);
-	ft_putstr("y : ");
-	get_next_line(0, &lne);
-	coord[3] = ft_atoi(lne);
-	if (line(coord, dim, (t_pixel*)addr))
-		ft_putendl("out of screen");
-		*/
 	return (img);
 }
-

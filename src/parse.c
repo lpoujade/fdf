@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 14:46:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/15 16:34:12 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/19 10:03:05 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static inline void	resize(t_coords **tab, size_t *act_size, size_t nsize)
 	ft_memcpy(new, *tab, *act_size);
 	ft_swap(tab, &new);
 	free(new);
-	*act_size *= 2;
+	*act_size = nsize;
 }
 
 /*
@@ -38,10 +38,12 @@ int					parse_file(char *file, t_coords **tab)
 	char			*line;
 	t_coords		vars;
 	size_t			ts;
+	int				mx;
 
 	ts = 200;
 	vars.z = 0;
 	vars.y = 0;
+	mx = 0;
 	if (!(*tab = malloc(ts * sizeof(t_coords))) ||
 			(fd = open(file, 0)) < 0)
 		return (-1);
@@ -57,13 +59,12 @@ int					parse_file(char *file, t_coords **tab)
 			while (*line && !((ft_isdigit(*line) || *line == '-')
 						&& ((*(line - 1) == ' ') || *(line + 1) == ' ')))
 				line++;
-			vars.x++;
+			vars.x++ > mx ? mx = vars.x : 0;
 			if (++vars.z >= (int)ts)
 				resize(tab, &ts, ts * 2);
 		}
 		vars.y++;
 	}
 	close(fd);
-	return (100);
-	//return (vars.y * vars.x); // WRONG (max x)
+	return (vars.y * mx);
 }

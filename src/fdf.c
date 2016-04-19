@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/15 16:27:13 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/19 12:17:30 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	usage(void)
 {
-	ft_putendl("Usage : fdf <map file>");
+	ft_putendl("Usage : fdf [x_dim,y_dim] <map>.fdf");
 	exit (0);
 }
 
@@ -31,30 +31,40 @@ static int	key_event(int key, void *infos)
 	if (key == 49)
 	{
 		ft_putendl("KEY -- space -- putting new image");
-		draw_img(con->next_img, con->file);
+		draw_img(con->next_img, con->file, con->dims);
 		mlx_put_image_to_window(con->ident, con->wndw, con->next_img, 0, 0);
+		//mlx_destroy_image(con->ident, con->next_img);
 	}
 	return (0);
 }
 
 int		main(int ac, char **av)
 {
-	(void)av; int width = 800, height = 800;
-	t_mlx_datas		connection;
+	t_mlx_datas		con;
 
 	if (ac < 2)
 		usage();
-	connection.file = av[1];
-
-	connection.ident = mlx_init();
+	if (ac == 3)
+	{
+		con.dims[0] = ft_atoi(av[1]);
+		con.dims[1] = ft_atoi(av[1] + ft_getndigits(con.dims[0]) + 1);
+		con.file = av[2];
+	}
+	else
+	{
+		con.file = av[1];
+		con.dims[0] = 1200;
+		con.dims[1] = 1200;
+	}
+	con.ident = mlx_init();
 	ft_putendl("MLX -- init");
-	connection.wndw = mlx_new_window(connection.ident, width, height, "Hello World?");
-	connection.next_img = mlx_new_image(connection.ident, width, height);
+	con.wndw = mlx_new_window(con.ident, con.dims[0], con.dims[1], "Hello World?");
+	con.next_img = mlx_new_image(con.ident, con.dims[0], con.dims[1]);
 	ft_putendl("MLX -- new_image");
-	mlx_key_hook(connection.wndw, key_event, (void*)&connection);
+	mlx_key_hook(con.wndw, key_event, (void*)&con);
 	ft_putendl("MLX -- hooking key func");
 
 	ft_putendl("MLX -- LOOP");
-	mlx_loop(connection.ident);
+	mlx_loop(con.ident);
 	return (0);
 }
