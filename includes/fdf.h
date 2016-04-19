@@ -37,5 +37,6 @@ typedef unsigned long	t_pixel;
 
 void	*draw_img(void *img, char *filename, int *dims);
 int		parse_file(char *file, t_coords **tab);
+void	show_parse(char *file);
 
 #endif

@@ -22,13 +22,13 @@ static int	key_event(int key, void *infos)
 {
 	t_mlx_datas	*con;
 	con = (t_mlx_datas *)infos;
-	if (key == 53)
+	if (key == 65307)
 	{
 		ft_putendl("KEY -- esc -- exiting");
 		mlx_destroy_window(con->ident, con->wndw);
 		exit (1);
 	}
-	if (key == 49)
+	if (key == 32)
 	{
 		ft_putendl("KEY -- space -- putting new image");
 		draw_img(con->next_img, con->file, con->dims);
@@ -46,6 +46,11 @@ int		main(int ac, char **av)
 		usage();
 	if (ac == 3)
 	{
+		if (!ft_strcmp(av[1], "-p"))
+		{
+			show_parse(av[2]);
+			exit (0);
+		}
 		con.dims[0] = ft_atoi(av[1]);
 		con.dims[1] = ft_atoi(av[1] + ft_getndigits(con.dims[0]) + 1);
 		con.file = av[2];

@@ -15,15 +15,15 @@ SRCDIR=./src
 OBJDIR=./.obj
 
 CC=clang
-CPPFLAGS=-Iincludes/ -Ilibft/includes
+CPPFLAGS=-Iincludes/ -Ilibft/includes -Imlx_src/
 CFLAGS=-Wall -Werror -Wextra -g
 
-LDFLAGS=-Llibft/
-LDLIBS=-lft -lmlx -framework OpenGL -framework AppKit
+LDFLAGS=-Llibft/ -Lmlx_src/
+LDLIBS=-lft -lmlx -lXext -lX11 #-framework OpenGL -framework AppKit
 
 LIB=libft/libft.a
 
-SRC=fdf.c parse.c draw.c
+SRC=fdf.c parse.c draw.c show_parse.c
 OBJ=$(SRC:.c=.o)
 
 SRCS=$(addprefix $(SRCDIR)/,$(SRC))
@@ -40,9 +40,6 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 $(LIB):
 	make -C libft/
-
-parser: parse_fdf
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS) mini.c src/parse.c -o parse_fdf
 
 clean:
 	-@rm $(OBJS) && echo "deleting" $(OBJS)

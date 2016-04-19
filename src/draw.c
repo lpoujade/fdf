@@ -92,7 +92,7 @@ int					line(int const *coord, int *dim, t_pixel *first)
 		xp.y = tmp;
 		tmp = yp.x;
 		yp.x = yp.y;
-	 	yp.y = tmp;
+		yp.y = tmp;
 	}
 	yp.z = yp.x;
 	xp.z = xp.x;
@@ -123,21 +123,21 @@ void				*draw_img(void *img, char *filename, int *dims)
 	ft_putendl("MLX -- mlx_get_data_addr");
 	addr = mlx_get_data_addr(img, &bpp, &size_line, &endianess);
 	ft_putstr("PARSING -- ");
-   	ft_putendl(filename);
+	ft_putendl(filename);
 	if ((size = parse_file(filename, &pts)) < 0)
 		exit (13);
 	ft_putendl("PARSING -- parsed");
 	while (c + 1 < size)
 	{
-		coord[0] = (pts[c].x * dims[0]) / 100 ;
-		coord[1] = (pts[c].y * dims[1]) / 100 ;
-		coord[2] = (pts[c + 1].x * dims[0])/100 ;
-		coord[3] = (pts[c + 1].y * dims[1])/100 ;
+		coord[0] = (pts[c].x * dims[0]) / 10 ;
+		coord[1] = (pts[c].y * dims[1]) / 10 ;
+		coord[2] = (pts[c + 1].x * dims[0])/10 ;
+		coord[3] = (pts[c + 1].y * dims[1])/10 ;
 		if (coord[2] > 1)
 			if (line(coord, dims, (t_pixel*)addr))
 				ft_putendl("out of screen");
-		coord[2] = c + size/2 < size ? (pts[c + size/2].x * dims[0])/100  : coord[0];
-		coord[3] = c + size/2 < size ? (pts[c + size/2].y * dims[1])/100  : coord[1];
+		coord[2] = c + size/2 < size ? (pts[c + size/2].x * dims[0])/10  : coord[0];
+		coord[3] = c + size/2 < size ? (pts[c + size/2].y * dims[1])/10  : coord[1];
 		if (line(coord, dims, (t_pixel*)addr))
 			ft_putendl("out of screen");
 		c++;
