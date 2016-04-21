@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/11 19:18:17 by liums             #+#    #+#             */
-/*   Updated: 2016/04/14 21:18:33 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/21 16:53:43 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,18 @@
 
 void	show_parse(char *file)
 {
-	t_coords	*tab = NULL;
+	t_map	tab;
 	int count, c = 0;
 
+	tab.dims.z = 1000;
 	if ((count = parse_file(file, &tab)) < 0)
 		ft_putendl("fail");
 
-	while (c < count)
+	while (c < tab.dims.z)
 	{
-		ft_putnbr(tab[c].x); ft_putchar(' ');
-		ft_putnbr(tab[c].y); ft_putchar(' ');
-		ft_putnbr(tab[c].z); ft_putchar('\n');
+		ft_putnbr(tab.pts[c].x); ft_putchar(' ');
+		ft_putnbr(tab.pts[c].y); ft_putchar(' ');
+		ft_putnbr(tab.pts[c].z); ft_putchar('\n');
 		c++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/21 13:19:54 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/21 19:53:55 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	usage(void)
 {
-	ft_putendl("Usage : fdf [x_dim,y_dim] <map>.fdf");
+	ft_putendl("Usage : fdf [x_dim,y_dim] <map>.fdf\n\tfdf -p <map>.fdf");
 	exit (0);
 }
 
@@ -68,7 +68,7 @@ int		main(int ac, char **av)
 	con.wndw = mlx_new_window(con.ident, con.dims[0], con.dims[1], "Hello World?");
 	con.next_img = mlx_new_image(con.ident, con.dims[0], con.dims[1]);
 	ft_putendl("MLX -- new_image");
-	mlx_key_hook(con.wndw, key_event, (void*)&con);
+	mlx_key_hook(con.wndw, &key_event, (void*)&con);
 	ft_putendl("MLX -- hooking key func");
 
 	ft_putendl("MLX -- LOOP");

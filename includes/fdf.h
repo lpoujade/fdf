@@ -6,13 +6,14 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 20:39:45 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/21 13:16:50 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/21 16:52:36 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 
+# include <errno.h>
 # include <fcntl.h>
 # include <stdio.h>
 # include <mlx.h>

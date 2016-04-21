@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/21 13:25:26 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/21 19:56:50 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,14 @@ int					line(int const *coord, int *dim, t_pixel *first)
 	return (0);
 }
 
+static inline int	translate(int a, int amax, int bmax)
+{
+	unsigned int b;
+
+	b = (((1000*a) / amax) * bmax) / 1000;
+	return (b);
+}
+
 void				*draw_img(void *img, char *filename, int *dims)
 {
 	int		bpp, size_line, endianess;
@@ -120,28 +128,36 @@ void				*draw_img(void *img, char *filename, int *dims)
 	t_map	pts;
 	int		size, c = 0;
 
-	pts.dims.z = 1000;
+	pts.dims.z = 100000;
 	ft_putendl("MLX -- mlx_get_data_addr");
 	addr = mlx_get_data_addr(img, &bpp, &size_line, &endianess);
 	ft_putstr("PARSING -- ");
 	ft_putendl(filename);
 	if ((size = parse_file(filename, &pts)) < 0)
-		exit (13);
-	ft_putendl("PARSING -- parsed");
-	while (c + 1 < size)
 	{
-		coord[0] = pts.pts[c].x * 100;
-		coord[1] = pts.pts[c].y * 100;
-		coord[2] = pts.pts[c + 1].x * 100;
-		coord[3] = pts.pts[c + 1].y * 100;
-		if (coord[2] > 1 && coord[1] == coord[3])
+		if (errno)
+			perror("fdf: parsing: ");
+		exit (13);
+	}
+	ft_putendl("PARSING -- parsed\n\nDRAWING --");
+	while (c + 1 < pts.dims.z)
+	{
+		coord[0] = translate(pts.pts[c].x, pts.dims.x, dims[0]);
+		coord[1] = translate(pts.pts[c].y, pts.dims.y, dims[1]);
+		coord[2] = translate(pts.pts[c + 1].x, pts.dims.x, dims[0]);
+		coord[3] = translate(pts.pts[c + 1].y, pts.dims.y, dims[1]);
+		if (coord[2] > 1)
 			if (line(coord, dims, (t_pixel*)addr))
 				ft_putendl("out of screen");
-		coord[2] = c + size/2 < size ? pts.pts[c + size/2].x * 100 : coord[0];
-		coord[3] = c + size/2 < size ? pts.pts[c + size/2].y * 100 : coord[1];
-		if (line(coord, dims, (t_pixel*)addr))
-			ft_putendl("out of screen");
+		if (c + pts.dims.z/pts.dims.x < pts.dims.z)
+		{
+			coord[2] = translate(pts.pts[c + pts.dims.z/pts.dims.x].x, pts.dims.x, dims[0]);
+			coord[3] = translate(pts.pts[c + pts.dims.z/pts.dims.x].y, pts.dims.y, dims[1]);
+			if (line(coord, dims, (t_pixel*)addr))
+				ft_putendl("out of screen");
+		}
 		c++;
 	}
+	ft_putendl("DRAWING -- OK");
 	return (img);
 }
