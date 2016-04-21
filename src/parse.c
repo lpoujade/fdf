@@ -41,7 +41,7 @@ static inline void	resize(t_coords **tab, int *act_size, int nsize)
 
 int					parse_file(char *file, t_map *tofill)
 {
-	int				fd;
+	int				fd, gnl_ret;
 	char			*line;
 	t_coords		vars;
 
@@ -51,7 +51,8 @@ int					parse_file(char *file, t_map *tofill)
 	if (!(tofill->pts = malloc(tofill->dims.z * sizeof(t_coords))) ||
 			(fd = open(file, 0)) < 0)
 		return (-1);
-	while (get_next_line(fd, &line) > 0 && !(vars.x = 0))
+		ft_putendl("READING -- ");
+	while ((gnl_ret = get_next_line(fd, &line)) > 0 && !(vars.x = 0))
 	{
 		while (*line)
 		{
@@ -71,6 +72,11 @@ int					parse_file(char *file, t_map *tofill)
 		vars.x > tofill->dims.x ? tofill->dims.x = vars.x : 0;
 	}
 	close(fd);
+	if (gnl_ret < 0)
+	{
+		ft_putendl("READ ERROR");
+		return (-1);
+	}
 	tofill->dims.z = vars.z;
 	return (tofill->dims.y * tofill->dims.x);
 }

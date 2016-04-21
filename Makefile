@@ -14,15 +14,16 @@ NAME=fdf
 SRCDIR=./src
 OBJDIR=./.obj
 
-CC=clang
+CC=gcc
 CPPFLAGS=-Iincludes/ -Ilibft/includes -Imlx_src/
 CFLAGS=-Wall -Werror -Wextra -g
 
 LDFLAGS=-Llibft/ -Lmlx_src/
 LDLIBS=-lft -lmlx
-#LNX_LDLIBS = -lXext -lX11
+# GNU/Linux
+ LDLIBS += -lXext -lX11
 # Mac Os
-LDLIBS += -framework OpenGL -framework AppKit
+# LDLIBS += -framework OpenGL -framework AppKit
 
 LIB=libft/libft.a
 

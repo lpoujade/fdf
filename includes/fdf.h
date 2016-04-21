@@ -24,7 +24,7 @@ typedef struct		s_mlx_datas
 	void			*ident;
 	void			*wndw;
 	void			*next_img;
-	char			*file;
+	char			**files;
 	int				dims[2];
 }					t_mlx_datas;
 

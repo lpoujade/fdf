@@ -50,7 +50,7 @@ static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
 	if (x == ex)
 		while (y != ey && y > 0)
 		{
-			if (y > dim[1] || x > dim[0] || y < 0 || x < 0)
+			if (y >= dim[1] || x >= dim[0] || y < 0 || x < 0)
 				return (1);
 			pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
 			y > ey ? y-- : y++;
@@ -58,7 +58,7 @@ static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
 	else if (y == ey)
 		while (x != ex && x > 0)
 		{
-			if (y > dim[1] || x > dim[0] || y < 0 || x < 0)
+			if (y >= dim[1] || x >= dim[0] || y < 0 || x < 0)
 				return (1);
 			pix_img((char*)first + ((x*4) + (dim[1] * (y * 4))));
 			x > ex ? x-- : x++;
