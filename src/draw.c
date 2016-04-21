@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/19 17:05:59 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/21 13:25:26 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,10 @@ void				*draw_img(void *img, char *filename, int *dims)
 	int		bpp, size_line, endianess;
 	char	*addr;
 	int		coord[4];
-	t_coords *pts;
+	t_map	pts;
 	int		size, c = 0;
 
+	pts.dims.z = 1000;
 	ft_putendl("MLX -- mlx_get_data_addr");
 	addr = mlx_get_data_addr(img, &bpp, &size_line, &endianess);
 	ft_putstr("PARSING -- ");
@@ -129,15 +130,15 @@ void				*draw_img(void *img, char *filename, int *dims)
 	ft_putendl("PARSING -- parsed");
 	while (c + 1 < size)
 	{
-		coord[0] = (pts[c].x * dims[0]) / 10 ;
-		coord[1] = (pts[c].y * dims[1]) / 10 ;
-		coord[2] = (pts[c + 1].x * dims[0])/10 ;
-		coord[3] = (pts[c + 1].y * dims[1])/10 ;
-		if (coord[2] > 1)
+		coord[0] = pts.pts[c].x * 100;
+		coord[1] = pts.pts[c].y * 100;
+		coord[2] = pts.pts[c + 1].x * 100;
+		coord[3] = pts.pts[c + 1].y * 100;
+		if (coord[2] > 1 && coord[1] == coord[3])
 			if (line(coord, dims, (t_pixel*)addr))
 				ft_putendl("out of screen");
-		coord[2] = c + size/2 < size ? (pts[c + size/2].x * dims[0])/10  : coord[0];
-		coord[3] = c + size/2 < size ? (pts[c + size/2].y * dims[1])/10  : coord[1];
+		coord[2] = c + size/2 < size ? pts.pts[c + size/2].x * 100 : coord[0];
+		coord[3] = c + size/2 < size ? pts.pts[c + size/2].y * 100 : coord[1];
 		if (line(coord, dims, (t_pixel*)addr))
 			ft_putendl("out of screen");
 		c++;

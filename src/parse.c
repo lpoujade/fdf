@@ -6,14 +6,14 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 14:46:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/19 16:35:29 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/21 13:27:42 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <fcntl.h>
 
-static inline void	resize(t_coords **tab, size_t *act_size, size_t nsize)
+static inline void	resize(t_coords **tab, int *act_size, int nsize)
 {
 	t_coords		*new;
 
@@ -33,39 +33,40 @@ static inline void	resize(t_coords **tab, size_t *act_size, size_t nsize)
 ** A(x, y, z) = (tab[A].x, tab[A].y, tab[A].z)
 */
 
-int					parse_file(char *file, t_coords **tab)
+int					parse_file(char *file, t_map *tofill)
 {
 	int				fd;
 	char			*line;
 	t_coords		vars;
-	size_t			ts;
-	int				mx;
 
-	ts = 10000;
 	vars.z = 0;
 	vars.y = 0;
-	mx = 0;
-	if (!(*tab = malloc(ts * sizeof(t_coords))) ||
+	tofill->dims.x = 0;
+	if (!(tofill->pts = malloc(tofill->dims.z * sizeof(t_coords))) ||
 			(fd = open(file, 0)) < 0)
-		return (-1);
-	while (get_next_line(fd, &line) && !(vars.x = 0))
 	{
-		while (*line)
+		perror("fdf: ");
+		return (-1);
+	}
+	while (get_next_line(fd, &line) > 0 && !(vars.x = 0))
+	{
+		while (*line && *line <= '9' && *line >= '0')
 		{
-			(*tab)[vars.z].x = vars.x;
-			(*tab)[vars.z].y = vars.y;
-			(*tab)[vars.z].z = ft_atoi(line);
-			line += ft_getndigits((*tab)[vars.z].z);
+			tofill->pts[vars.z].x = vars.x;
+			tofill->pts[vars.z].y = vars.y;
+			tofill->pts[vars.z].z = ft_atoi(line);
+			line += ft_getndigits(tofill->pts[vars.z].z);
 			*line ? line++ : 0;
 			while (*line && !((ft_isdigit(*line) || *line == '-')
 						&& ((*(line - 1) == ' ') || *(line + 1) == ' ')))
 				line++;
-			vars.x++ > mx ? mx = vars.x : 0;
-			if (++vars.z >= (int)ts)
-				resize(tab, &ts, ts * 2);
+			vars.x++;
+			if (++vars.z >= tofill->dims.z)
+				resize(&tofill->pts, &tofill->dims.z, tofill->dims.z * 2);
 		}
 		vars.y++;
+		vars.x > tofill->dims.x ? tofill->dims.x = vars.x : 0;
 	}
 	close(fd);
-	return (vars.y * mx);
+	return (vars.y * tofill->dims.x);
 }

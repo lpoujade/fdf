@@ -6,7 +6,7 @@
 #    By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/11 13:41:06 by lpoujade          #+#    #+#              #
-#    Updated: 2016/04/19 16:32:31 by lpoujade         ###   ########.fr        #
+#    Updated: 2016/04/21 12:50:47 by lpoujade         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,10 @@ CPPFLAGS=-Iincludes/ -Ilibft/includes -Imlx_src/
 CFLAGS=-Wall -Werror -Wextra -g
 
 LDFLAGS=-Llibft/ -Lmlx_src/
-LDLIBS=-lft -lmlx -lXext -lX11 #-framework OpenGL -framework AppKit
+LDLIBS=-lft -lmlx
+#LNX_LDLIBS = -lXext -lX11
+# Mac Os
+LDLIBS += -framework OpenGL -framework AppKit
 
 LIB=libft/libft.a
 

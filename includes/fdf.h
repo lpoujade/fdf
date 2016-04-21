@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 20:39:45 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/19 11:34:30 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/21 13:16:50 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FDF_H
 
 # include <fcntl.h>
+# include <stdio.h>
 # include <mlx.h>
 # include "libft.h"
 
@@ -33,10 +34,20 @@ typedef struct		s_coords
 	int				z;
 }					t_coords;
 
+/*
+** (t_coords)dims : x=dim, y=dim, z=nb pts
+*/
+
+typedef struct		s_map
+{
+	t_coords		*pts;
+	t_coords		dims;
+}					t_map;
+
 typedef unsigned long	t_pixel;
 
 void	*draw_img(void *img, char *filename, int *dims);
-int		parse_file(char *file, t_coords **tab);
+int		parse_file(char *file, t_map *tofill);
 void	show_parse(char *file);
 
 #endif
