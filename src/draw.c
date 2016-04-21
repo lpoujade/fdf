@@ -104,7 +104,7 @@ int					line(int const *coord, int *dim, t_pixel *first)
 		pix_img((char*)first + ((xp.x * 4) + (dim[1] * (yp.x * 4))));			// 4 -> mlx bpp
 		yp.x = yp.z + ((yp.y - yp.z) * (xp.x - xp.z))/(xp.y - xp.z);
 		xp.x++;
-		if (yp.x > dim[1] || xp.x > dim[0] || yp.x < 0 || xp.x < 0)
+		if (yp.x >= dim[1] || xp.x >= dim[0] || yp.x < 0 || xp.x < 0)
 			return (1);
 		if (xp.x == xp.y && yp.x == yp.y)
 			break ;

@@ -15,16 +15,12 @@
 
 static inline void	resize(t_coords **tab, int *act_size, int nsize)
 {
-	//t_coords		*new;
+	t_coords		*new;
 
 	if (*act_size >= nsize)
 		exit(2);
-	ft_putendl_fd("WILL PROBABLY SEGFAULT", 2);
+	ft_putendl_fd(ft_strjoin("MEMLEAK (+pasts) : ", ft_itoa(sizeof(t_coords) * *act_size)), 2);
 
-	*tab = ft_realloc((void**)tab, *act_size, nsize);
-	*act_size = nsize;
-
-	/*
 	if (!(new = malloc(nsize * sizeof(t_coords))))
 		exit(12);
 	ft_memcpy(new, *tab, *act_size);
@@ -32,7 +28,6 @@ static inline void	resize(t_coords **tab, int *act_size, int nsize)
 	*tab = new;
 	//free(new);
 	*act_size = nsize;
-	*/
 }
 
 /*
@@ -51,7 +46,6 @@ int					parse_file(char *file, t_map *tofill)
 	if (!(tofill->pts = malloc(tofill->dims.z * sizeof(t_coords))) ||
 			(fd = open(file, 0)) < 0)
 		return (-1);
-		ft_putendl("READING -- ");
 	while ((gnl_ret = get_next_line(fd, &line)) > 0 && !(vars.x = 0))
 	{
 		while (*line)

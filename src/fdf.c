@@ -28,7 +28,7 @@ static int	key_event(int key, void *infos)
 	{
 		ft_putendl("KEY -- esc -- exiting");
 		mlx_destroy_window(con->ident, con->wndw);
-		exit (1);
+		exit (errno);
 	}
 	else if (key == 32)
 	{
@@ -56,7 +56,7 @@ int		main(int ac, char **av)
 
 	if (ac < 2)
 		usage();
-	if (ac == 3 && *av[1] == '-')
+	if (ac == 3 && (*av[1] == '-' || ft_strchr(av[1], ',')))
 	{
 		if (!ft_strcmp(av[1], "-p"))
 		{
