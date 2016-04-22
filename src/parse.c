@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 14:46:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/21 19:33:19 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/22 14:21:18 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,19 @@
 static inline void	resize(t_coords **tab, int *act_size, int nsize)
 {
 	t_coords		*new;
+	t_coords		*todel;
 
 	if (*act_size >= nsize)
 		exit(2);
-	ft_putendl_fd(ft_strjoin("MEMLEAK (+pasts) : ", ft_itoa(sizeof(t_coords) * *act_size)), 2);
-
+	ft_putstr_fd("POSSIBLE MEMLEAK (+pasts) : ", 2);
+	ft_putnbr_fd(sizeof(t_coords) * *act_size, 2);
+	ft_putchar('\n');
 	if (!(new = malloc(nsize * sizeof(t_coords))))
 		exit(12);
 	ft_memcpy(new, *tab, *act_size);
-	//ft_swap(tab, &new);
+	todel = *tab;
 	*tab = new;
-	//free(new);
+	free(todel);
 	*act_size = nsize;
 }
 
@@ -36,9 +38,10 @@ static inline void	resize(t_coords **tab, int *act_size, int nsize)
 
 int					parse_file(char *file, t_map *tofill)
 {
-	int				fd, gnl_ret;
-	char			*line;
-	t_coords		vars;
+	int			fd;
+	int			gnl_ret;
+	char		*line;
+	t_coords	vars;
 
 	vars.z = 0;
 	tofill->dims.y = 0;
@@ -46,8 +49,9 @@ int					parse_file(char *file, t_map *tofill)
 	if (!(tofill->pts = malloc(tofill->dims.z * sizeof(t_coords))) ||
 			(fd = open(file, 0)) < 0)
 		return (-1);
-	while ((gnl_ret = get_next_line(fd, &line)) > 0 && !(vars.x = 0))
+	while ((gnl_ret = get_next_line(fd, &line)) > 0)
 	{
+		vars.x = 0;
 		while (*line)
 		{
 			tofill->pts[vars.z].x = vars.x;
