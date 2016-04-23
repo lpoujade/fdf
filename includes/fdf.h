@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 20:39:45 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/21 16:52:36 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/23 20:08:27 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <stdio.h>
 # include <mlx.h>
 # include "libft.h"
+
+# define	SUP_PTS_NB 1000
 
 typedef struct		s_mlx_datas
 {

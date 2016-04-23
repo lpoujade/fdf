@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 14:46:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/22 14:21:18 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/23 19:41:28 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,27 @@
 
 static inline void	resize(t_coords **tab, int *act_size, int nsize)
 {
-	t_coords		*new;
+	t_coords		*new_tab;
 	t_coords		*todel;
+	int				count;
 
+	count = 0;
 	if (*act_size >= nsize)
 		exit(2);
 	ft_putstr_fd("POSSIBLE MEMLEAK (+pasts) : ", 2);
 	ft_putnbr_fd(sizeof(t_coords) * *act_size, 2);
 	ft_putchar('\n');
-	if (!(new = malloc(nsize * sizeof(t_coords))))
+	if (!(new_tab = malloc(nsize * sizeof(t_coords))))
 		exit(12);
-	ft_memcpy(new, *tab, *act_size);
+	while (count < *act_size)
+	{
+		ft_putnbr(count);
+		ft_putendl(" - copy");
+		new_tab[count] = (*tab)[count];
+		count++;
+	}
 	todel = *tab;
-	*tab = new;
+	*tab = new_tab;
 	free(todel);
 	*act_size = nsize;
 }

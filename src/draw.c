@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/23 14:24:55 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/23 20:07:58 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,24 +31,16 @@ static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
 	y = coord[1];
 	ex = coord[2];
 	ey = coord[3];
-	if (x == ex)
-		while (y != ey)
-		{
-			if (y > dim[1] || x > dim[0] || y < 0 || x < 0)
-				return (1);
-			pix_img((char*)first + ((x * 4) + (dim[1] * (y * 4))));
-			y > ey ? y-- : y++;
-		}
-	else if (y == ey)
-		while (x != ex)
-		{
-			if (y > dim[1] || x > dim[0] || y < 0 || x < 0)
-				return (1);
-			pix_img((char*)first + ((x * 4) + (dim[1] * (y * 4))));
-			x > ex ? x-- : x++;
-		}
-	else if (!(y > dim[1] || x > dim[0] || y < 0 || x < 0))
+	while (y != ey || x != ex)
+	{
+		if (y > dim[1] || x > dim[0] || y < 0 || x < 0)
+			return (1);
 		pix_img((char*)first + ((x * 4) + (dim[1] * (y * 4))));
+		if (x == ex)
+			y > ey ? y-- : y++;
+		else
+			x > ex ? x-- : x++;
+	}
 	return (0);
 }
 
@@ -61,7 +53,6 @@ static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
 
 int					line(int const *coord, int *dim, t_pixel *first)
 {
-	int			tmp;
 	t_coords	xp;
 	t_coords	yp;
 
@@ -71,12 +62,8 @@ int					line(int const *coord, int *dim, t_pixel *first)
 	yp.y = coord[3];
 	if (xp.x > xp.y)
 	{
-		tmp = xp.x;
-		xp.x = xp.y;
-		xp.y = tmp;
-		tmp = yp.x;
-		yp.x = yp.y;
-		yp.y = tmp;
+		ft_iswap(&xp.x, &xp.y);
+		ft_iswap(&yp.x, &yp.y);
 	}
 	yp.z = yp.x;
 	xp.z = xp.x;
@@ -113,7 +100,7 @@ void				*draw_img(void *img, char *filename, int *dims)
 	int		size;
 	int		c = 0;
 
-	pts.dims.z = 100000;
+	pts.dims.z = SUP_PTS_NB;
 	ft_putendl("MLX -- mlx_get_data_addr");
 	addr = mlx_get_data_addr(img, &bpp, &size_line, &endianess);
 	ft_putstr("PARSING -- ");
@@ -125,13 +112,12 @@ void				*draw_img(void *img, char *filename, int *dims)
 		exit(13);
 	}
 	ft_putendl("PARSING -- parsed\n\nDRAWING --");
-	while (c + 1 < pts.dims.z)
+	while (c < pts.dims.z)
 	{
 		coord[0] = tr(pts.pts[c].x, pts.dims.x, dims[0]);
 		coord[1] = tr(pts.pts[c].y, pts.dims.y, dims[1]);
 		coord[2] = tr(pts.pts[c + 1].x, pts.dims.x, dims[0]);
 		coord[3] = tr(pts.pts[c + 1].y, pts.dims.y, dims[1]);
-
 		if (coord[3] == coord[1])
 		{
 			if (line(coord, dims, (t_pixel*)addr))

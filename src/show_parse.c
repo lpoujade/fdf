@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/11 19:18:17 by liums             #+#    #+#             */
-/*   Updated: 2016/04/22 14:20:00 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/23 20:08:09 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	show_parse(char *file)
 	int		c;
 
 	c = 0;
-	tab.dims.z = 100;
+	tab.dims.z = SUP_PTS_NB;
 	if ((count = parse_file(file, &tab)) < 0)
 		ft_putendl("fail");
 	while (c < tab.dims.z)
