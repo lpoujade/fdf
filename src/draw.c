@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/22 14:30:07 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/23 12:24:48 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,22 @@ static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
 	ex = coord[2];
 	ey = coord[3];
 	if (x == ex)
-		while (y != ey && y > 0)
+		while (y != ey)
 		{
-			if (y >= dim[1] || x >= dim[0] || y < 0 || x < 0)
+			if (y > dim[1] || x > dim[0] || y < 0 || x < 0)
 				return (1);
 			pix_img((char*)first + ((x * 4) + (dim[1] * (y * 4))));
 			y > ey ? y-- : y++;
 		}
 	else if (y == ey)
-		while (x != ex && x > 0)
+		while (x != ex)
 		{
-			if (y >= dim[1] || x >= dim[0] || y < 0 || x < 0)
+			if (y > dim[1] || x > dim[0] || y < 0 || x < 0)
 				return (1);
 			pix_img((char*)first + ((x * 4) + (dim[1] * (y * 4))));
 			x > ex ? x-- : x++;
 		}
-	else if (!(y >= dim[1] || x >= dim[0] || y < 0 || x < 0))
+	else if (!(y > dim[1] || x > dim[0] || y < 0 || x < 0))
 		pix_img((char*)first + ((x * 4) + (dim[1] * (y * 4))));
 	return (0);
 }
@@ -85,13 +85,11 @@ int					line(int const *coord, int *dim, t_pixel *first)
 			return (1);
 	while (xp.x <= xp.y && !(yp.x == yp.y || xp.x == xp.y))
 	{
-		if (yp.x >= dim[1] || xp.x >= dim[0] || yp.x < 0 || xp.x < 0)
+		if (yp.x > dim[1] || xp.x > dim[0] || yp.x < 0 || xp.x < 0)
 			return (1);
 		pix_img((char*)first + ((xp.x * 4) + (dim[1] * (yp.x * 4))));
 		yp.x = yp.z + ((yp.y - yp.z) * (xp.x - xp.z)) / (xp.y - xp.z);
 		xp.x++;
-		if (xp.x == xp.y && yp.x == yp.y)
-			break ;
 	}
 	return (0);
 }
@@ -100,7 +98,9 @@ static inline int	tr(int a, int amax, int bmax)
 {
 	unsigned int b;
 
-	b = (((1000 * a) / amax) * bmax) / 1000;
+	ft_putstr("translating "); ft_putnbr(a);
+	b = (((10000 * a) / amax) * bmax) / 10000;
+	ft_putendl(ft_strjoin(" to ", ft_itoa(b)));
 	return (b);
 }
 
@@ -133,15 +133,26 @@ void				*draw_img(void *img, char *filename, int *dims)
 		coord[1] = tr(pts.pts[c].y, pts.dims.y, dims[1]);
 		coord[2] = tr(pts.pts[c + 1].x, pts.dims.x, dims[0]);
 		coord[3] = tr(pts.pts[c + 1].y, pts.dims.y, dims[1]);
+
 		if (coord[3] == coord[1])
+		{
+			ft_putstr("H line ("); ft_putnbr(coord[0]); ft_putchar(';');
+			ft_putnbr(coord[1]); ft_putstr(") to ("); ft_putnbr(coord[2]); ft_putchar(';');
+			ft_putnbr(coord[3]); ft_putstr(")\n");
 			if (line(coord, dims, (t_pixel*)addr))
 				ft_putendl("out of screen");
+		}
 		if (pts.pts[c].y + 1 < pts.dims.y)
 		{
 			coord[2] = tr(pts.pts[c].x, pts.dims.x, dims[0]);
 			coord[3] = tr(pts.pts[c].y + 1, pts.dims.y, dims[1]);
 			if (line(coord, dims, (t_pixel*)addr))
 				ft_putendl("out of screen");
+
+		ft_putstr("V line ("); ft_putnbr(coord[0]); ft_putchar(';');
+		ft_putnbr(coord[1]); ft_putstr(") to ("); ft_putnbr(coord[2]); ft_putchar(';');
+		ft_putnbr(coord[3]); ft_putstr(")\n");
+
 		}
 		c++;
 	}
