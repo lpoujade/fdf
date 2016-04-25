@@ -15,19 +15,19 @@ SRCDIR=./src
 OBJDIR=./.obj
 
 CC=gcc
-CPPFLAGS=-Iincludes/ -Ilibft/includes #-Imlx_src/
+CPPFLAGS=-Iincludes/ -Ilibft/includes -Imlx_src/
 CFLAGS=-Wall -Werror -Wextra -g
 
-LDFLAGS=-Llibft/ #-Lmlx_src/
+LDFLAGS=-Llibft/ -Lmlx_src/
 LDLIBS=-lft -lmlx
 # GNU/Linux
-# LDLIBS += -lXext -lX11
+ LDLIBS += -lXext -lX11
 # Mac Os
- LDLIBS += -framework OpenGL -framework AppKit
+# LDLIBS += -framework OpenGL -framework AppKit
 
 LIB=libft/libft.a
 
-SRC=fdf.c parse.c draw.c show_parse.c
+SRC=fdf.c parse.c draw.c show_parse.c nd.c
 OBJ=$(SRC:.c=.o)
 
 SRCS=$(addprefix $(SRCDIR)/,$(SRC))

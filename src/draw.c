@@ -68,29 +68,25 @@ int					line(int const *coord, int *dim, t_pixel *first)
 	}
 	yp.z = yp.x;
 	xp.z = xp.x;
-	if (yp.y > yp.z)
-		w = yp.y - yp.z > xp.y - xp.z ? 0 : 1;
-	else
-		w = yp.z - yp.y > xp.y - xp.z ? 0 : 1;
+	w = ft_abs(yp.z - yp.y) > (unsigned int)(xp.y - xp.z) ? 0 : 1;
 	if (yp.x == yp.y || xp.x == xp.y)
 		if (vh_lines(coord, dim, first))
 			return (1);
-	while (!(yp.x == yp.y || xp.x == xp.y))
+	while ((w && yp.x < yp.y) || (!w && xp.x < xp.y))
 	{
 		if (yp.x > dim[1] || xp.x > dim[0] || yp.x < 0 || xp.x < 0)
 			return (1);
-		pix_img((char*)first + ((xp.x * 4) + (dim[1] * (yp.x * 4))));
 		if (w)
 		{
-			ft_putendl("X");
-			yp.x = yp.z + ((yp.y - yp.z) * (xp.x - xp.z)) / (xp.y - xp.z);
+		pix_img((char*)first + ((xp.x * 4) + (dim[1] * (yp.x * 4))));
 			xp.x++;
+			yp.x = yp.z + ((yp.y - yp.z) * (xp.x - xp.z)) / (xp.y - xp.z);
 		}
 		else
 		{
-			ft_putendl("Y");
-			xp.x = xp.z + ((xp.y - xp.z) * (yp.x - yp.z)) / (yp.y - yp.z);
+		pix_img((char*)first + ((yp.x * 4) + (dim[0] * (xp.x * 4))));
 			yp.x++;
+			xp.x = xp.z + ((xp.y - xp.z) * (yp.x - yp.z)) / (yp.y - yp.z);
 		}
 	}
 	return (0);
@@ -127,36 +123,27 @@ void				*draw_img(void *img, char *filename, int *dims)
 	char	*addr;
 	int		coord[4];
 	t_map	pts;
-	int		size;
 	int		c = 0;
 
-	pts.dims.z = SUP_PTS_NB;
+	pts = getpts(filename);
 	ft_putendl("MLX -- mlx_get_data_addr");
 	addr = mlx_get_data_addr(img, &bpp, &size_line, &endianess);
-	ft_putstr("PARSING -- ");
-	ft_putendl(filename);
-	if ((size = parse_file(filename, &pts)) < 0)
-	{
-		if (errno)
-			perror("fdf: parsing: ");
-		exit(13);
-	}
-	ft_putendl("PARSING -- parsed\n\nDRAWING --");
+	ft_putendl("\nDRAWING --");
 	while (c < pts.dims.z)
 	{
-		while (c < pts.dims.z && pts.pts[c].z <= 0)
-			c++;
-		coord[0] = tr(pts.pts[c].x, pts.dims.x, dims[0]) + 0.8 * pts.pts[c].z;
-		coord[1] = tr(pts.pts[c].y, pts.dims.y, dims[1]) + 0.4 * pts.pts[c].z;
-		coord[2] = tr(pts.pts[c + 1].x, pts.dims.x, dims[0]) + 0.8 * pts.pts[c + 1].z;
-		coord[3] = tr(pts.pts[c + 1].y, pts.dims.y, dims[1]) + 0.4 * pts.pts[c + 1].z;
+//		while (c < pts.dims.z && pts.pts[c].z <= 0)
+//			c++;
+		coord[0] = tr(pts.pts[c].x, pts.dims.x, dims[0]) + 0.6 * pts.pts[c].z;
+		coord[1] = tr(pts.pts[c].y, pts.dims.y, dims[1]) + 0.3 * pts.pts[c].z;
+		coord[2] = tr(pts.pts[c + 1].x, pts.dims.x, dims[0]) + 0.6 * pts.pts[c + 1].z;
+		coord[3] = tr(pts.pts[c + 1].y, pts.dims.y, dims[1]) + 0.3 * pts.pts[c + 1].z;
 		if (pts.pts[c].y == pts.pts[c + 1].y)
 			if (line(coord, dims, (t_pixel*)addr))
 				ft_putendl("out of screen");
 		if (c + pts.dims.z/2 < pts.dims.z)
 		{
-			coord[2] = tr(pts.pts[c + pts.dims.z/2].x, pts.dims.x, dims[0])+ 0.8 * pts.pts[c + pts.dims.z/2].z;
-			coord[3] = tr(pts.pts[c + pts.dims.z/2].y, pts.dims.y, dims[1])+ 0.4 * pts.pts[c + pts.dims.z/2].z;
+			coord[2] = tr(pts.pts[c + pts.dims.z/2].x, pts.dims.x, dims[0])+ 0.6 * pts.pts[c + pts.dims.z/2].z;
+			coord[3] = tr(pts.pts[c + pts.dims.z/2].y, pts.dims.y, dims[1])+ 0.3 * pts.pts[c + pts.dims.z/2].z;
 			if (line(coord, dims, (t_pixel*)addr))
 				ft_putendl("out of screen");
 		}

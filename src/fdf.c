@@ -24,13 +24,13 @@ static int	key_event(int key, void *infos)
 	static int	c = 0;
 
 	con = (t_mlx_datas *)infos;
-	if (key == 53)
+	if (key == 65307)
 	{
 		ft_putendl("KEY -- esc -- exiting");
 		mlx_destroy_window(con->ident, con->wndw);
 		exit(errno);
 	}
-	else if (key == 49)
+	else if (key == 32)
 	{
 		if (*(con->files + c))
 		{
@@ -74,7 +74,11 @@ int			main(int ac, char **av)
 		con.dims[0] = 800;
 		con.dims[1] = 800;
 	}
-	con.ident = mlx_init();
+	if (!(con.ident = mlx_init()))
+	{
+		ft_putendl_fd("INIT ERROR", 2);
+		exit (40);
+	}
 	ft_putendl("MLX -- init");
 	con.wndw = mlx_new_window(con.ident, con.dims[0] + 2, con.dims[1] + 2, "?");
 	mlx_key_hook(con.wndw, &key_event, (void*)&con);

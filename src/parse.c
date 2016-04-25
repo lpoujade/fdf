@@ -62,7 +62,7 @@ int					parse_file(char *file, t_map *tofill)
 		{
 			tofill->pts[vars.z].x = vars.x;
 			tofill->pts[vars.z].y = tofill->dims.y;
-			tofill->pts[vars.z].z = ft_atoi(line);
+			tofill->pts[vars.z].z = ft_atoi(line) + 1;
 			line += ft_getndigits(tofill->pts[vars.z].z);
 			*line ? line++ : 0;
 			while (*line && !((ft_isdigit(*line) || *line == '-')

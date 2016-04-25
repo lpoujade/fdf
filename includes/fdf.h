@@ -49,8 +49,9 @@ typedef struct		s_map
 
 typedef unsigned long	t_pixel;
 
-void	*draw_img(void *img, char *filename, int *dims);
+void	*draw_igg(void *img, char *filename, int *dims);
 int		parse_file(char *file, t_map *tofill);
 void	show_parse(char *file);
+t_map	getpts(char *filename);
 
 #endif
