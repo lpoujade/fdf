@@ -29,8 +29,6 @@ static inline void	resize(t_coords **tab, int *act_size, int nsize)
 		exit(12);
 	while (count < *act_size)
 	{
-		ft_putnbr(count);
-		ft_putendl(" - copy");
 		new_tab[count] = (*tab)[count];
 		count++;
 	}
@@ -64,7 +62,7 @@ int					parse_file(char *file, t_map *tofill)
 		{
 			tofill->pts[vars.z].x = vars.x;
 			tofill->pts[vars.z].y = tofill->dims.y;
-			tofill->pts[vars.z].z = ft_atoi(line);
+			tofill->pts[vars.z].z = ft_atoi(line) + 1;
 			line += ft_getndigits(tofill->pts[vars.z].z);
 			*line ? line++ : 0;
 			while (*line && !((ft_isdigit(*line) || *line == '-')
@@ -77,12 +75,12 @@ int					parse_file(char *file, t_map *tofill)
 		tofill->dims.y++;
 		vars.x > tofill->dims.x ? tofill->dims.x = vars.x : 0;
 	}
-	close(fd);
 	if (gnl_ret < 0)
 	{
 		ft_putendl("READ ERROR");
 		return (-1);
 	}
+	close(fd);
 	tofill->dims.z = vars.z;
 	return (tofill->dims.y * tofill->dims.x);
 }
