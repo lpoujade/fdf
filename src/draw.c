@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/23 20:07:58 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/25 14:51:18 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int					line(int const *coord, int *dim, t_pixel *first)
 {
 	t_coords	xp;
 	t_coords	yp;
+	int		w;
 
 	xp.x = coord[0];
 	yp.x = coord[1];
@@ -67,29 +68,43 @@ int					line(int const *coord, int *dim, t_pixel *first)
 	}
 	yp.z = yp.x;
 	xp.z = xp.x;
+	if (yp.y > yp.z)
+		w = yp.y - yp.z > xp.y - xp.z ? 0 : 1;
+	else
+		w = yp.z - yp.y > xp.y - xp.z ? 0 : 1;
 	if (yp.x == yp.y || xp.x == xp.y)
 		if (vh_lines(coord, dim, first))
 			return (1);
-	while (xp.x <= xp.y && !(yp.x == yp.y || xp.x == xp.y))
+	while (!(yp.x == yp.y || xp.x == xp.y))
 	{
 		if (yp.x > dim[1] || xp.x > dim[0] || yp.x < 0 || xp.x < 0)
 			return (1);
 		pix_img((char*)first + ((xp.x * 4) + (dim[1] * (yp.x * 4))));
-		yp.x = yp.z + ((yp.y - yp.z) * (xp.x - xp.z)) / (xp.y - xp.z);
-		xp.x++;
+		if (w)
+		{
+			ft_putendl("X");
+			yp.x = yp.z + ((yp.y - yp.z) * (xp.x - xp.z)) / (xp.y - xp.z);
+			xp.x++;
+		}
+		else
+		{
+			ft_putendl("Y");
+			xp.x = xp.z + ((xp.y - xp.z) * (yp.x - yp.z)) / (yp.y - yp.z);
+			yp.x++;
+		}
 	}
 	return (0);
 }
 
 static inline int	tr(int a, int amax, int bmax)
 {
-	return (a);
 	unsigned int b;
 
-	b = (((100000 * a) / amax) * bmax) / 100000;
+	b = (((100000 * a) / amax) * (bmax/1.5)) / 100000;
 	return (b);
 }
 
+/*
 static inline void	to3d(t_coords *pts, unsigned int nbpts)
 {
 	double rap = 0.6;
@@ -97,11 +112,12 @@ static inline void	to3d(t_coords *pts, unsigned int nbpts)
 
 	while (c < nbpts)
 	{
-		pts[c].x += 10 * ((rap * 2) * pts[c].z);
-		pts[c].y += 10 * (rap * pts[c].z);
+		pts[c].x += ((rap * 2) * pts[c].z);
+		pts[c].y += (rap * pts[c].z);
 		c++;
 	}
 }
+*/
 
 void				*draw_img(void *img, char *filename, int *dims)
 {
@@ -125,23 +141,22 @@ void				*draw_img(void *img, char *filename, int *dims)
 			perror("fdf: parsing: ");
 		exit(13);
 	}
-	to3d(pts.pts, pts.dims.z);
 	ft_putendl("PARSING -- parsed\n\nDRAWING --");
 	while (c < pts.dims.z)
 	{
 		while (c < pts.dims.z && pts.pts[c].z <= 0)
 			c++;
-		coord[0] = 10*tr(pts.pts[c].x, pts.dims.x, dims[0]);
-		coord[1] = 10*tr(pts.pts[c].y, pts.dims.y, dims[1]);
-		coord[2] = 10*tr(pts.pts[c + 1].x, pts.dims.x, dims[0]);
-		coord[3] = 10*tr(pts.pts[c + 1].y, pts.dims.y, dims[1]);
+		coord[0] = tr(pts.pts[c].x, pts.dims.x, dims[0]) + 0.8 * pts.pts[c].z;
+		coord[1] = tr(pts.pts[c].y, pts.dims.y, dims[1]) + 0.4 * pts.pts[c].z;
+		coord[2] = tr(pts.pts[c + 1].x, pts.dims.x, dims[0]) + 0.8 * pts.pts[c + 1].z;
+		coord[3] = tr(pts.pts[c + 1].y, pts.dims.y, dims[1]) + 0.4 * pts.pts[c + 1].z;
 		if (pts.pts[c].y == pts.pts[c + 1].y)
 			if (line(coord, dims, (t_pixel*)addr))
 				ft_putendl("out of screen");
 		if (c + pts.dims.z/2 < pts.dims.z)
 		{
-			coord[2] = 10*tr(pts.pts[c + pts.dims.z/2].x, pts.dims.x, dims[0]);
-			coord[3] = 10*tr(pts.pts[c + pts.dims.z/2].y, pts.dims.y, dims[1]);
+			coord[2] = tr(pts.pts[c + pts.dims.z/2].x, pts.dims.x, dims[0])+ 0.8 * pts.pts[c + pts.dims.z/2].z;
+			coord[3] = tr(pts.pts[c + pts.dims.z/2].y, pts.dims.y, dims[1])+ 0.4 * pts.pts[c + pts.dims.z/2].z;
 			if (line(coord, dims, (t_pixel*)addr))
 				ft_putendl("out of screen");
 		}
