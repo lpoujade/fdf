@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/25 13:37:23 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/26 21:17:35 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ static int	key_event(int key, void *infos)
 	static int	c = 0;
 
 	con = (t_mlx_datas *)infos;
-	if (key == 65307)
+	if (key == 53) // 65307
 	{
 		ft_putendl("KEY -- esc -- exiting");
 		mlx_destroy_window(con->ident, con->wndw);
 		exit(errno);
 	}
-	else if (key == 32)
+	else if (key == 49)
 	{
 		if (*(con->files + c))
 		{

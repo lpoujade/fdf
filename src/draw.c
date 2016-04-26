@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/25 14:51:18 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/26 22:31:40 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@ static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
 	y = coord[1];
 	ex = coord[2];
 	ey = coord[3];
+		ft_putstr("V line ("); ft_putnbr(coord[0]); ft_putchar(';');
+		ft_putnbr(coord[1]); ft_putstr(") to ("); ft_putnbr(coord[2]); ft_putchar(';');
+		ft_putnbr(coord[3]); ft_putstr(")\n");
 	while (y != ey || x != ex)
 	{
 		if (y > dim[1] || x > dim[0] || y < 0 || x < 0)
@@ -70,8 +73,16 @@ int					line(int const *coord, int *dim, t_pixel *first)
 	xp.z = xp.x;
 	w = ft_abs(yp.z - yp.y) > (unsigned int)(xp.y - xp.z) ? 0 : 1;
 	if (yp.x == yp.y || xp.x == xp.y)
+	{
 		if (vh_lines(coord, dim, first))
 			return (1);
+	}
+	else
+	{
+		ft_putstr("H line ("); ft_putnbr(coord[0]); ft_putchar(';');
+		ft_putnbr(coord[1]); ft_putstr(") to ("); ft_putnbr(coord[2]); ft_putchar(';');
+		ft_putnbr(coord[3]); ft_putstr(")\n");
+	}
 	while ((w && yp.x < yp.y) || (!w && xp.x < xp.y))
 	{
 		if (yp.x > dim[1] || xp.x > dim[0] || yp.x < 0 || xp.x < 0)
@@ -84,7 +95,7 @@ int					line(int const *coord, int *dim, t_pixel *first)
 		}
 		else
 		{
-		pix_img((char*)first + ((yp.x * 4) + (dim[0] * (xp.x * 4))));
+		pix_img((char*)first + ((xp.x * 4) + (dim[0] * (yp.x * 4))));
 			yp.x++;
 			xp.x = xp.z + ((xp.y - xp.z) * (yp.x - yp.z)) / (yp.y - yp.z);
 		}
@@ -137,16 +148,20 @@ void				*draw_img(void *img, char *filename, int *dims)
 		coord[1] = tr(pts.pts[c].y, pts.dims.y, dims[1]) + 0.3 * pts.pts[c].z;
 		coord[2] = tr(pts.pts[c + 1].x, pts.dims.x, dims[0]) + 0.6 * pts.pts[c + 1].z;
 		coord[3] = tr(pts.pts[c + 1].y, pts.dims.y, dims[1]) + 0.3 * pts.pts[c + 1].z;
-		if (pts.pts[c].y == pts.pts[c + 1].y)
-			if (line(coord, dims, (t_pixel*)addr))
-				ft_putendl("out of screen");
-		if (c + pts.dims.z/2 < pts.dims.z)
+		if (coord[2])
 		{
-			coord[2] = tr(pts.pts[c + pts.dims.z/2].x, pts.dims.x, dims[0])+ 0.6 * pts.pts[c + pts.dims.z/2].z;
-			coord[3] = tr(pts.pts[c + pts.dims.z/2].y, pts.dims.y, dims[1])+ 0.3 * pts.pts[c + pts.dims.z/2].z;
 			if (line(coord, dims, (t_pixel*)addr))
 				ft_putendl("out of screen");
 		}
+		if (c + pts.dims.y < pts.dims.z)
+		{
+			coord[2] = tr(pts.pts[c + pts.dims.y].x, pts.dims.x, dims[0])+ 0.6 * pts.pts[c + pts.dims.y].z;
+			coord[3] = tr(pts.pts[c + pts.dims.y].y, pts.dims.y, dims[1])+ 0.3 * pts.pts[c + pts.dims.y].z;
+			if (line(coord, dims, (t_pixel*)addr))
+				ft_putendl("out of screen");
+		}
+		else
+			ft_putendl("NO V LINE");
 		c++;
 	}
 	ft_putendl("DRAWING -- OK");

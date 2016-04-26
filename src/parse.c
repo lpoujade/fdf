@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 14:46:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/25 14:38:50 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/26 21:49:44 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int					parse_file(char *file, t_map *tofill)
 		{
 			tofill->pts[vars.z].x = vars.x;
 			tofill->pts[vars.z].y = tofill->dims.y;
-			tofill->pts[vars.z].z = ft_atoi(line) + 1;
+			tofill->pts[vars.z].z = ft_atoi(line);
 			line += ft_getndigits(tofill->pts[vars.z].z);
 			*line ? line++ : 0;
 			while (*line && !((ft_isdigit(*line) || *line == '-')
