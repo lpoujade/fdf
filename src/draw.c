@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/27 14:08:30 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/27 14:25:09 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,15 @@ int					line(int const *coord, int *dim, t_pixel *first)
 	return (0);
 }
 
-static inline t_map	*tr(t_map *orig, int *dims)
+static inline t_map	tr(t_map orig, int *dims)
 {
 	int				c;
 
 	c = 0;
-	while (c < orig->dims.z)
+	while (c < orig.dims.z)
 	{
-		orig->pts[c].x = (((100000 * orig->pts[c].x) / orig->dims.x) * (dims[0]/1.5)) / 100000;
-		orig->pts[c].y = (((100000 * orig->pts[c].y) / orig->dims.y) * (dims[1]/1.5)) / 100000;
+		orig.pts[c].x = (((100000 * orig.pts[c].x) / orig.dims.x) * (dims[0])) / 100000;
+		orig.pts[c].y = (((100000 * orig.pts[c].y) / orig.dims.y) * (dims[1])) / 100000;
 		c++;
 	}
 	return (orig);
@@ -118,7 +118,7 @@ void				*draw_img(void *img, char *filename, int *dims)
 	pts = getpts(filename);
 	ft_putendl("MLX -- mlx_get_data_addr");
 	addr = mlx_get_data_addr(img, &bpp, &size_line, &endianess);
-	ft_putnbr(draw_lines(*tr(&pts, dims), dims, (t_pixel*)addr));
+	ft_putnbr(draw_lines(tr(pts, dims), dims, (t_pixel*)addr));
 	ft_putendl(" errors");
 	return (img);
 }
