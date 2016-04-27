@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 20:39:45 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/27 13:52:04 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/27 15:09:05 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef unsigned long	t_pixel;
 
 void	*draw_img(void *img, char *filename, int *dims);
 int		draw_lines(t_map pts, int *dims, t_pixel *addr);
+void	*draw_this_line(void *img, int *dims);
 int		line(int const *coord, int *dim, t_pixel *first);
 int		parse_file(char *file, t_map *tofill);
 void	show_parse(char *file);

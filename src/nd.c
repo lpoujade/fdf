@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 22:30:10 by liums             #+#    #+#             */
-/*   Updated: 2016/04/27 13:57:08 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/27 16:42:05 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,17 @@ int		draw_lines(t_map pts, int *dims, t_pixel *addr)
 	ft_putendl("\nDRAWING --");
 	while (c < pts.dims.z)
 	{
-		coord[0] = pts.pts[c].x + 0.6 * pts.pts[c].z;
-		coord[1] = pts.pts[c].y + 0.3 * pts.pts[c].z;
-		coord[2] = pts.pts[c + 1].x + 0.6 * pts.pts[c + 1].z;
-		coord[3] = pts.pts[c + 1].y + 0.3 * pts.pts[c + 1].z;
+		coord[0] = pts.pts[c].x;
+		coord[1] = pts.pts[c].y;
+		coord[2] = pts.pts[c + 1].x;
+		coord[3] = pts.pts[c + 1].y;
 		if (coord[2])
-		{
-			if (line(coord, dims, addr))
-				outof++;
-		}
+			outof += line(coord, dims, addr);
 		if (c + pts.dims.y < pts.dims.z)
 		{
-			coord[2] = pts.pts[c + pts.dims.y].x + 0.6 * pts.pts[c + pts.dims.y].z;
-			coord[3] = pts.pts[c + pts.dims.y].y + 0.3 * pts.pts[c + pts.dims.y].z;
-			if (line(coord, dims, addr))
-				outof++;
+			coord[2] = pts.pts[c + pts.dims.y].x;
+			coord[3] = pts.pts[c + pts.dims.y].y;
+			outof += line(coord, dims, addr);
 		}
 		c++;
 	}
