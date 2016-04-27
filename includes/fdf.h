@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 20:39:45 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/26 21:15:37 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/27 13:52:04 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct		s_coords
 }					t_coords;
 
 /*
-** (t_coords)dims : x=dim, y=dim, z=nb pts
+** (t_coords)dims : x dim, y dim, z=nb pts
 */
 
 typedef struct		s_map
@@ -50,6 +50,8 @@ typedef struct		s_map
 typedef unsigned long	t_pixel;
 
 void	*draw_img(void *img, char *filename, int *dims);
+int		draw_lines(t_map pts, int *dims, t_pixel *addr);
+int		line(int const *coord, int *dim, t_pixel *first);
 int		parse_file(char *file, t_map *tofill);
 void	show_parse(char *file);
 t_map	getpts(char *filename);
