@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 22:30:10 by liums             #+#    #+#             */
-/*   Updated: 2016/04/27 16:42:05 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/28 10:58:37 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,21 +32,6 @@ t_map	getpts(char *filename)
 	return (pts);
 }
 
-/*
-static inline void	to3d(t_coords *pts, unsigned int nbpts)
-{
-	double rap = 0.6;
-	unsigned int	c = 0;
-
-	while (c < nbpts)
-	{
-		pts[c].x += ((rap * 2) * pts[c].z);
-		pts[c].y += (rap * pts[c].z);
-		c++;
-	}
-}
-*/
-
 int		draw_lines(t_map pts, int *dims, t_pixel *addr)
 {
 	int		c;
@@ -56,7 +41,7 @@ int		draw_lines(t_map pts, int *dims, t_pixel *addr)
 	c = 0;
 	outof = 0;
 	ft_putendl("\nDRAWING --");
-	while (c < pts.dims.z)
+	while (c + 1 < pts.dims.z)
 	{
 		coord[0] = pts.pts[c].x;
 		coord[1] = pts.pts[c].y;
@@ -66,7 +51,7 @@ int		draw_lines(t_map pts, int *dims, t_pixel *addr)
 			outof += line(coord, dims, addr);
 		if (c + pts.dims.y < pts.dims.z)
 		{
-			coord[2] = pts.pts[c + pts.dims.y].x;
+			coord[2] = pts.pts[c + pts.dims.x].x;
 			coord[3] = pts.pts[c + pts.dims.y].y;
 			outof += line(coord, dims, addr);
 		}

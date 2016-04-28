@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/27 17:44:56 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/28 11:28:01 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,17 @@ int					line(int const *coord, int *dim, t_pixel *first)
 {
 	t_coords	xp;
 	t_coords	yp;
-	int		w;
 
 	xp.x = coord[0];
 	yp.x = coord[1];
 	xp.y = coord[2];
 	yp.y = coord[3];
-	w = ft_abs(yp.y - yp.x) > ft_abs(xp.y - xp.x) ? 0 : 1;
-	if ((w && xp.x > xp.y) || (!w && yp.x > yp.y))
+	if ((ft_abs(yp.y - yp.x) > ft_abs(xp.y - xp.x)))
+	{
+		ft_iswap(&xp.x, &yp.x);
+		ft_iswap(&xp.y, &yp.y);
+	}
+	if (xp.x > xp.y)
 	{
 		ft_iswap(&xp.x, &xp.y);
 		ft_iswap(&yp.x, &yp.y);
@@ -76,28 +79,19 @@ int					line(int const *coord, int *dim, t_pixel *first)
 	xp.z = xp.x;
 	if (yp.x == yp.y || xp.x == xp.y)
 		return (vh_lines(coord, dim, first));
-	while (xp.x < xp.y && yp.x < yp.y)
+	while (xp.x < xp.y)
 	{
 		if ((first + ((xp.x * 4) + (dim[1] * (yp.x * 4)))) >
-				first + dim[0] * 4 + dim[1] * (dim[1] * 4))
+				first + dim[0] * 4 + dim[1] * (dim[1] * 4) || xp.x < 0 || yp.x < 0)
 			return (1);
 		pix_img((char*)first + ((xp.x * 4) + (dim[1] * (yp.x * 4))));
-		if (w)
-		{
-			xp.x++;
-			yp.x = yp.z + ((yp.y - yp.z) * (xp.x - xp.z)) / (xp.y - xp.z);
-		}
-		else
-		{
-			ft_putendl("y increm");
-			yp.x++;
-			xp.x = xp.z + ((xp.y - xp.z) * (yp.x - yp.z)) / (yp.y - yp.z);
-		}
+		xp.x++;
+		yp.x = yp.z + ((yp.y - yp.z) * (xp.x - xp.z)) / (xp.y - xp.z);
 	}
 	return (0);
 }
 
-static inline t_map	tr(t_map orig, int *dims)
+static t_map	tr(t_map orig, int *dims)
 {
 	int				c;
 
@@ -112,7 +106,7 @@ static inline t_map	tr(t_map orig, int *dims)
 			(((100000 * orig.pts[c].y) / orig.dims.y) * (dims[1])) / 100000;
 		c++;
 	}
-	ft_putendl("pts -> 3dified");
+	//ft_putendl("pts -> 3dified");
 	return (orig);
 }
 
