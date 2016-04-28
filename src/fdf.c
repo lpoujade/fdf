@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/27 15:14:10 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/28 12:01:45 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,10 @@ static int	key_event(int key, void *infos)
 			ft_putendl("MLX -- new_image");
 			draw_img(con->next_img, *(con->files + c), con->dims);
 			mlx_put_image_to_window(con->ident, con->wndw, con->next_img, 1, 1);
-			mlx_destroy_image(con->ident, con->next_img);
 			c++;
 		}
 		else
 			ft_putendl("NO MORE FILES");
-	}
-	else if (key == 36)
-	{
-		ft_putendl("KEY -- enter -- new line");
-		con->next_img = mlx_new_image(con->ident, con->dims[0], con->dims[1]);
-		ft_putendl("MLX -- new_image");
-		draw_this_line(con->next_img, con->dims);
-		mlx_put_image_to_window(con->ident, con->wndw, con->next_img, 1, 1);
-		mlx_destroy_image(con->ident, con->next_img);
 	}
 	else
 		ft_putendl(ft_strjoin("UNK KEY : ", ft_itoa(key)));
