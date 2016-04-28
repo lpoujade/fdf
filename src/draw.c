@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/28 12:39:03 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/28 14:40:54 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int					line(int const *coord, int *dim, t_pixel *first)
 	}
 	yp.z = yp.x;
 	xp.z = xp.x;
-	while (xp.x < xp.y)
+	while (xp.x <= xp.y)
 	{
 		if (xp.x >= dim[0] || yp.x >= dim[1] || xp.x < 0 || yp.x < 0)
 			return (1);
@@ -93,8 +93,8 @@ t_map				tr(t_map orig, int *dims)
 	c = 0;
 	while (c < orig.dims.z)
 	{
-		orig.pts[c].x += 0.8 * 2;
-		orig.pts[c].y += 0.4 * 2;
+		//orig.pts[c].x += 0.8 * 2;
+		//orig.pts[c].y += 0.4 * 2;
 		orig.pts[c].x =
 			(((100000 * orig.pts[c].x) / orig.dims.x) * (dims[0])) / 100000;
 		orig.pts[c].y =

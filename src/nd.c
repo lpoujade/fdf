@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 22:30:10 by liums             #+#    #+#             */
-/*   Updated: 2016/04/28 12:36:57 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/28 14:26:18 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ int		draw_lines(t_map pts, int *dims, t_pixel *addr)
 	ft_putendl("\nDRAWING --");
 	while (c + 1 < pts.dims.z)
 	{
-		while (c + 1 < pts.dims.z && !pts.pts[c].z)
-			c++;
 		coord[0] = pts.pts[c].x;
 		coord[1] = pts.pts[c].y;
 		coord[2] = pts.pts[c + 1].x;
