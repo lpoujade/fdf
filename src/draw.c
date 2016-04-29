@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/28 14:40:54 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/29 11:36:19 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ t_map				tr(t_map orig, int *dims)
 	c = 0;
 	while (c < orig.dims.z)
 	{
-		//orig.pts[c].x += 0.8 * 2;
-		//orig.pts[c].y += 0.4 * 2;
+		orig.pts[c].x += 0.8 * orig.pts[c].z;
+		orig.pts[c].y += 0.4 * orig.pts[c].z;
 		orig.pts[c].x =
 			(((100000 * orig.pts[c].x) / orig.dims.x) * (dims[0])) / 100000;
 		orig.pts[c].y =

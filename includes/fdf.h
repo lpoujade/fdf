@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 20:39:45 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/28 11:52:07 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/04/29 11:04:19 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int		draw_lines(t_map pts, int *dims, t_pixel *addr);
 void	*draw_this_line(void *img, int *dims);
 t_map	tr(t_map orig, int *dims);
 int		line(int const *coord, int *dim, t_pixel *first);
-int		parse_file(char *file, t_map *tofill);
+int		parse_file(int fd, t_map *tofill);
 void	show_parse(char *file);
 t_map	getpts(char *filename);
 
