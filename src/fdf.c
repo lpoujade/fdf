@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/28 12:01:45 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/04 18:48:45 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ static int	key_event(int key, void *infos)
 		{
 			ft_putstr("KEY -- space -- new image: ");
 			ft_putendl(*(con->files + c));
-			con->next_img = mlx_new_image(con->ident, con->dims[0], con->dims[1]);
+			con->next_img = mlx_new_image(con->ident, con->dims[0]*2, con->dims[1]*2);
 			ft_putendl("MLX -- new_image");
 			draw_img(con->next_img, *(con->files + c), con->dims);
-			mlx_put_image_to_window(con->ident, con->wndw, con->next_img, 1, 1);
+			mlx_put_image_to_window(con->ident, con->wndw, con->next_img, 50, 50);
 			c++;
 		}
 		else
@@ -63,15 +63,15 @@ int			main(int ac, char **av)
 			show_parse(av[2]);
 			exit(0);
 		}
-		con.dims[0] = ft_atoi(av[1]);
-		con.dims[1] = ft_atoi(av[1] + ft_getndigits(con.dims[0]) + 1);
+		con.dims[0] = ft_atoi(av[1]) / 2;
+		con.dims[1] = ft_atoi(av[1] + ft_getndigits(con.dims[0]) + 1) / 2;
 		con.files = av + 2;
 	}
 	else
 	{
 		con.files = av + 1;
-		con.dims[0] = 800;
-		con.dims[1] = 800;
+		con.dims[0] = 400;
+		con.dims[1] = 400;
 	}
 	if (!(con.ident = mlx_init()))
 	{
@@ -79,7 +79,7 @@ int			main(int ac, char **av)
 		exit (40);
 	}
 	ft_putendl("MLX -- init");
-	con.wndw = mlx_new_window(con.ident, con.dims[0] + 2, con.dims[1] + 2, "?");
+	con.wndw = mlx_new_window(con.ident, con.dims[0]* 2, con.dims[1]* 2, "?");
 	mlx_key_hook(con.wndw, &key_event, (void*)&con);
 	ft_putendl("MLX -- hooking key func");
 	ft_putendl("MLX -- LOOP\n\n");

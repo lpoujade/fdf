@@ -6,7 +6,7 @@
 #    By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/11 13:41:06 by lpoujade          #+#    #+#              #
-#    Updated: 2016/04/26 21:16:49 by lpoujade         ###   ########.fr        #
+#    Updated: 2016/05/04 16:19:00 by lpoujade         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,10 @@ LDLIBS=-lft -lmlx
 # LDLIBS += -lXext -lX11
 # Mac Os
  LDLIBS += -framework OpenGL -framework AppKit
+
+# GCOV, llvm specific
+# CFLAGS+=-g -fprofile-arcs -ftest-coverage
+# LDFLAGS+=--coverage
 
 LIB=libft/libft.a
 
@@ -45,10 +49,14 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 $(LIB):
 	make -C libft/
 
+covclean:
+	-@rm $(OBJS:.o=.gcno) && echo "deleting" $(OBJS:.o=.gcno)
+	-@rm $(OBJS:.o=.gcda) && echo "deleting" $(OBJS:.o=.gcda)
+
 clean:
 	-@rm $(OBJS) && echo "deleting" $(OBJS)
 
-fclean: clean
+fclean: clean covclean
 	-@rm $(NAME) && echo "deleting" $(NAME)
 
 re: fclean all

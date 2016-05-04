@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/29 11:36:19 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/04 18:48:45 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,26 @@ int					line(int const *coord, int *dim, t_pixel *first)
 t_map				tr(t_map orig, int *dims)
 {
 	int				c;
+	double 			ct;
+	int				x;
 
 	c = 0;
+	ct = 0.8;
 	while (c < orig.dims.z)
 	{
-		orig.pts[c].x += 0.8 * orig.pts[c].z;
-		orig.pts[c].y += 0.4 * orig.pts[c].z;
+		x = orig.pts[c].x;
+		orig.pts[c].x = ((1000 * ct) * orig.pts[c].x)/1000 - ((1000*ct) * orig.pts[c].y)/1000;
+		orig.pts[c].y = orig.pts[c].z + ((100*ct)/2 * x)/100 + ((100*ct)/2 * orig.pts[c].y)/100;
+		if (orig.pts[c].x < 0 || orig.pts[c].y < 0)
+			ft_putendl("NEGATIVE POINTS !");
 		orig.pts[c].x =
 			(((100000 * orig.pts[c].x) / orig.dims.x) * (dims[0])) / 100000;
 		orig.pts[c].y =
 			(((100000 * orig.pts[c].y) / orig.dims.y) * (dims[1])) / 100000;
+		if (orig.pts[c].x > dims[0] || orig.pts[c].y > dims[1])
+			ft_putendl("WRONG CALC");
 		c++;
 	}
-	//ft_putendl("pts -> 3dified");
+	ft_putendl("pts -> 3dified");
 	return (orig);
 }
