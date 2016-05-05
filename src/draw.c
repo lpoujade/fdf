@@ -6,19 +6,17 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/05/04 18:48:45 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/05 16:17:41 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static inline void	pix_img(char *adddr)
+static inline void	pix_img(char *addr)
 {
-	t_pixel *addr;
-	addr = (t_pixel*)adddr;
 
 	if (addr)
-		*addr = 0xffffff0;
+		*(t_pixel*)addr = 0xffffff0;
 }
 
 static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
@@ -93,20 +91,25 @@ t_map				tr(t_map orig, int *dims)
 	int				x;
 
 	c = 0;
-	ct = 0.8;
+	ct = 0.6;
+	(void)dims;
 	while (c < orig.dims.z)
 	{
+		//orig.pts[c].x += orig.dims.x;
 		x = orig.pts[c].x;
-		orig.pts[c].x = ((1000 * ct) * orig.pts[c].x)/1000 - ((1000*ct) * orig.pts[c].y)/1000;
-		orig.pts[c].y = orig.pts[c].z + ((100*ct)/2 * x)/100 + ((100*ct)/2 * orig.pts[c].y)/100;
+		orig.pts[c].x = (x + orig.pts[c].y) / 2;
+		orig.pts[c].y = orig.pts[c].z + ((x - orig.pts[c].y) / 1.5);
+		orig.pts[c].x *= 10; orig.pts[c].y *= 10;
+		/*
 		if (orig.pts[c].x < 0 || orig.pts[c].y < 0)
 			ft_putendl("NEGATIVE POINTS !");
 		orig.pts[c].x =
-			(((100000 * orig.pts[c].x) / orig.dims.x) * (dims[0])) / 100000;
+			(((10000 * orig.pts[c].x) / orig.dims.x) * (dims[0])) / 10000;
 		orig.pts[c].y =
-			(((100000 * orig.pts[c].y) / orig.dims.y) * (dims[1])) / 100000;
+			(((10000 * orig.pts[c].y) / orig.dims.y) * (dims[1])) / 10000;
 		if (orig.pts[c].x > dims[0] || orig.pts[c].y > dims[1])
 			ft_putendl("WRONG CALC");
+			*/
 		c++;
 	}
 	ft_putendl("pts -> 3dified");

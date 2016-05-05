@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 22:30:10 by liums             #+#    #+#             */
-/*   Updated: 2016/05/04 18:40:19 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/05 15:25:40 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,23 @@ void	*draw_img(void *img, char *filename, int *dims)
 	int		bpp;
 	int		size_line;
 	int		endianess;
-	char	*addr;
+	t_pixel	*addr;
 	t_map	pts;
 
 	pts = getpts(filename);
 	ft_putendl("MLX -- mlx_get_data_addr");
-	addr = mlx_get_data_addr(img, &bpp, &size_line, &endianess);
-	ft_putnbr(draw_lines(tr(pts, dims), dims, (t_pixel*)addr));
+	addr = (t_pixel*)mlx_get_data_addr(img, &bpp, &size_line, &endianess);
+	ft_putnbr(draw_lines(tr(pts, dims), dims, addr));
 	ft_putendl(" lines out");
-	int coord[4] = {0,0,dims[0],dims[1]};
+
+	/* limits 
+	int coord[4] = {0,0,dims[0] - 1,dims[1] - 1};
 	if (line(coord, dims, (t_pixel*)addr))
 		ft_putendl("OUT");
-
-	coord[0] = dims[0]; coord[1] = 1; coord[2] = 1; coord[3] = dims[1] - 1
+	coord[0] = dims[0] - 1; coord[1] = 1; coord[2] = 1; coord[3] = dims[1] - 1;
 	if (line(coord, dims, (t_pixel*)addr))
 		ft_putendl("OUT 2");
+	*//* limits */
 	return (img);
 }
 
@@ -69,22 +71,18 @@ int		draw_lines(t_map pts, int *dims, t_pixel *addr)
 	ft_putendl("\nDRAWING --");
 	while (c + 1 < pts.dims.z)
 	{
-		//while (c < pts.dims.z && !pts.pts[c].z)
-	//		c++;
 		coord[0] = pts.pts[c].x;
 		coord[1] = pts.pts[c].y;
 		coord[2] = pts.pts[c + 1].x;
 		coord[3] = pts.pts[c + 1].y;
 		if (coord[2])
 			outof += line(coord, dims, addr);
-		/*
 		if (c + pts.dims.x < pts.dims.z)
 		{
 			coord[2] = pts.pts[c + pts.dims.x].x;
 			coord[3] = pts.pts[c + pts.dims.x].y;
 			outof += line(coord, dims, addr);
-		}
-		*/
+	}
 		c++;
 	}
 	ft_putendl("DRAWING -- OK");
