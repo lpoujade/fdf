@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 22:30:10 by liums             #+#    #+#             */
-/*   Updated: 2016/05/05 18:51:24 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/06 17:47:49 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	*draw_img(void *img, char *filename, int *dims)
 	ft_putendl("MLX -- mlx_get_data_addr");
 	addr = (t_pixel*)mlx_get_data_addr(img, &bpp, &size_line, &endianess);
 	ft_putnbr(draw_lines(tr(pts, dims), dims, addr));
-	ft_putendl(" lines out");
+	ft_putendl(" pts out");
 
-	/* limits 
-	int coord[4] = {0,0,dims[0] - 1,dims[1] - 1};
+	/* limits
+	int coord[4] = {1,1,dims[0] - 1,dims[1] - 1};
 	if (line(coord, dims, (t_pixel*)addr))
 		ft_putendl("OUT");
 	coord[0] = dims[0] - 1; coord[1] = 1; coord[2] = 1; coord[3] = dims[1] - 1;

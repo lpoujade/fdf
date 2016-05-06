@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/05/05 13:05:55 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/06 17:53:50 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static void	usage(void)
 {
-	ft_putendl("Usage : fdf [x_dim,y_dim] <map>.fdf\n\tfdf -p <map>.fdf");
+	ft_putendl("Usage : fdf [x_dim,y_dim] <map>.fdf\n\tfdf -p <map>.fdf \
+			\n\tfdf map1.fdf [map2.fdf map3.fdf ...]");
 	exit(0);
 }
 
