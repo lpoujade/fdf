@@ -12,18 +12,23 @@
 
 #include "fdf.h"
 
-void	*draw_img(void *img, char *filename, int *dims)
+void	*draw_img(void *o_con, char *filename)
 {
 	int		bpp;
 	int		size_line;
 	int		endianess;
+	t_mlx_datas *con;
 	t_pixel	*addr;
 	t_map	pts;
 
+	con = (t_mlx_datas*)o_con;
 	pts = getpts(filename);
+	ft_putendl("MLX -- new img");
+	con->next_img = mlx_new_image(con->ident, con->dims[0], con->dims[1]);
 	ft_putendl("MLX -- mlx_get_data_addr");
-	addr = (t_pixel*)mlx_get_data_addr(img, &bpp, &size_line, &endianess);
-	ft_putnbr(draw_lines(tr(pts, dims), dims, addr));
+	addr = (t_pixel*)mlx_get_data_addr(con->next_img, &bpp, &size_line, &endianess);
+	ft_putstr("\nmap size : "); ft_putnbr(ft_strlen((char*)addr)); ft_putchar('\n');
+	ft_putnbr(draw_lines(tr(pts, con->dims), con->dims, addr));
 	ft_putendl(" pts out");
 
 	/* limits
@@ -34,7 +39,7 @@ void	*draw_img(void *img, char *filename, int *dims)
 	if (line(coord, dims, (t_pixel*)addr))
 		ft_putendl("OUT 2");
 	*//* limits */
-	return (img);
+	return (con->next_img);
 }
 
 t_map	getpts(char *filename)
@@ -46,7 +51,10 @@ t_map	getpts(char *filename)
 	if (!(pts.pts = malloc(pts.dims.z * sizeof(t_coords))))
 		exit(10);
 	if ((fd = open(filename, 0)) < 0)
-		exit(11);
+	{
+		perror(filename);
+		exit (11);
+	}
 	ft_putstr("PARSING -- ");
 	ft_putendl(filename);
 	if (parse_file(fd, &pts) < 0)
@@ -75,14 +83,14 @@ int		draw_lines(t_map pts, int *dims, t_pixel *addr)
 		coord[1] = pts.pts[c].y;
 		coord[2] = pts.pts[c + 1].x;
 		coord[3] = pts.pts[c + 1].y;
-		if (coord[2])
+		if (coord[2] > coord[0])
 			outof += line(coord, dims, addr);
 		if (c + pts.dims.x < pts.dims.z)
 		{
 			coord[2] = pts.pts[c + pts.dims.x].x;
 			coord[3] = pts.pts[c + pts.dims.x].y;
 			outof += line(coord, dims, addr);
-	}
+		}
 		c++;
 	}
 	ft_putendl("DRAWING -- OK");

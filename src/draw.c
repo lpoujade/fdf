@@ -69,14 +69,14 @@ int					line(int const *coord, int *dim, t_pixel *first)
 		return (vh_lines(coord, dim, first));
 	if ((ft_abs(yp.y - yp.x) > ft_abs(xp.y - xp.x)))
 		rev = 1;
-	if (xp.x > xp.y)
+	if ((xp.x > xp.y && !rev) || (rev && yp.x > yp.y))
 	{
 		ft_iswap(&xp.x, &xp.y);
 		ft_iswap(&yp.x, &yp.y);
 	}
 	yp.z = yp.x;
 	xp.z = xp.x;
-	while ((xp.x <= xp.y && !rev) || (rev && xp.y <= xp.x))
+	while ((xp.x <= xp.y && !rev) || (rev && yp.x <= yp.y))
 	{
 		if (!(xp.x + 1 >= dim[0] || yp.x + 1 >= dim[1] || xp.x < 0 || yp.x < 0))
 			pix_img((char*)first + ((xp.x * 4) + (dim[1] * (yp.x * 4))));
@@ -92,8 +92,6 @@ int					line(int const *coord, int *dim, t_pixel *first)
 			yp.x++;
 			xp.x = xp.z + ((xp.y - xp.z) * (yp.x - yp.z)) / (yp.y - yp.z);
 		}
-		if (xp.x < 0 || yp.x < 0)
-			ft_putendl("NEG PTS");
 	}
 	return (pts_out);
 }
@@ -108,14 +106,8 @@ t_map				tr(t_map orig, int *dims)
 	while (c < orig.dims.z)
 	{
 		x = orig.pts[c].x;
-		orig.pts[c].x = (x - orig.pts[c].y) / 1.8;
-		orig.pts[c].y = -(orig.pts[c].z) + ((x + orig.pts[c].y) / 2);
-		orig.pts[c].x += orig.dims.x/2 + orig.dims.x/4;
-		//orig.pts[c].y += orig.dims.y;
-		orig.pts[c].x =
-			(((10 * orig.pts[c].x) / (orig.dims.x / 2)) * (dims[0])) / 10;
-		orig.pts[c].y =
-			(((10 * orig.pts[c].y) / (orig.dims.y / 2)) * (dims[1])) / 10;
+		orig.pts[c].x = ((orig.pts[c].x - orig.pts[c].y) / 1);
+		orig.pts[c].y = (-(orig.pts[c].z) + ((x + orig.pts[c].y) / 2.8));
 		c++;
 	}
 	return (orig);
