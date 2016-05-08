@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 22:30:10 by liums             #+#    #+#             */
-/*   Updated: 2016/05/06 17:47:49 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/08 11:44:39 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,19 @@
 
 void	*draw_img(void *o_con, char *filename)
 {
-	int		bpp;
-	int		size_line;
-	int		endianess;
-	t_mlx_datas *con;
-	t_pixel	*addr;
-	t_map	pts;
+	int			bpp;
+	int			size_line;
+	int			ed;
+	t_mlx_datas	*con;
+	t_pixel		*addr;
 
 	con = (t_mlx_datas*)o_con;
-	pts = getpts(filename);
 	ft_putendl("MLX -- new img");
 	con->next_img = mlx_new_image(con->ident, con->dims[0], con->dims[1]);
 	ft_putendl("MLX -- mlx_get_data_addr");
-	addr = (t_pixel*)mlx_get_data_addr(con->next_img, &bpp, &size_line, &endianess);
-	ft_putstr("\nmap size : "); ft_putnbr(ft_strlen((char*)addr)); ft_putchar('\n');
-	ft_putnbr(draw_lines(tr(pts, con->dims), con->dims, addr));
+	addr = (t_pixel*)mlx_get_data_addr(con->next_img, &bpp, &size_line, &ed);
+	ft_putnbr(draw_lines(tr(getpts(filename), con->dims), con->dims, addr));
 	ft_putendl(" pts out");
-
-	/* limits
-	int coord[4] = {1,1,dims[0] - 1,dims[1] - 1};
-	if (line(coord, dims, (t_pixel*)addr))
-		ft_putendl("OUT");
-	coord[0] = dims[0] - 1; coord[1] = 1; coord[2] = 1; coord[3] = dims[1] - 1;
-	if (line(coord, dims, (t_pixel*)addr))
-		ft_putendl("OUT 2");
-	*//* limits */
 	return (con->next_img);
 }
 
@@ -53,7 +41,7 @@ t_map	getpts(char *filename)
 	if ((fd = open(filename, 0)) < 0)
 	{
 		perror(filename);
-		exit (11);
+		exit(11);
 	}
 	ft_putstr("PARSING -- ");
 	ft_putendl(filename);

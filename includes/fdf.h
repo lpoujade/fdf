@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 20:39:45 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/04/29 11:04:19 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/08 11:17:39 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@
 # include "libft.h"
 
 # define	SUP_PTS_NB 1000
+
+/*
+** KEYCODES (to defines)
+** (key == 65363 || key == 65361 || key == 65364 || key == 65362))
+** sp 32 // esc 65307
+*/
 
 typedef struct		s_mlx_datas
 {
