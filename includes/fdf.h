@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 20:39:45 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/05/08 11:17:39 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/08 16:58:32 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct		s_map
 
 typedef unsigned long	t_pixel;
 
+void	quit_error(char *str, int error, void (exit_func)(void));
 void	*draw_img(void *con, char *filename);
 int		draw_lines(t_map pts, int *dims, t_pixel *addr);
 t_map	tr(t_map orig, int *dims);

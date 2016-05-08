@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/05/08 12:12:13 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/08 18:11:22 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,10 @@ t_map				tr(t_map orig, int *dims)
 	while (c < orig.dims.z)
 	{
 		x = orig.pts[c].x;
-		orig.pts[c].x *= 10; orig.pts[c].y *= 10; orig.pts[c].z *= 3;
+		orig.pts[c].x += orig.dims.x/2;
+		orig.pts[c].y += orig.dims.y/2;
 		orig.pts[c].x = orig.pts[c].x + ((orig.pts[c].x - orig.pts[c].y) / 1);
-		orig.pts[c].y = orig.pts[c].y + (-(orig.pts[c].z) + ((x + orig.pts[c].y) / 2.8));
-		orig.pts[c].x += orig.dims.x; orig.pts[c].y += orig.dims.y;
+		orig.pts[c].y = (-(orig.pts[c].z) + ((x + orig.pts[c].y) / 2.8));
 		c++;
 	}
 	return (orig);

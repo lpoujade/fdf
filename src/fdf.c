@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/05/08 11:49:15 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/08 17:14:46 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@ static void	pusage(void)
 {
 	ft_putendl("Usage : fdf [dim] <map1.fdf [map2.fdf map3.fdf ...]");
 	exit(0);
+}
+
+void		quit_error(char *str, int error, void (exit_func)(void))
+{
+	if (str)
+		ft_putendl(str);
+	if (error)
+		ft_putendl(strerror(error));
+	if (exit_func)
+		(exit_func)();
+	exit(error ? error : 127);
 }
 
 static int	key_event(int key, void *infos)
@@ -88,10 +99,7 @@ int			main(int ac, char **av)
 		con.dims[1] = 1500;
 	}
 	if (!(con.ident = mlx_init()))
-	{
-		ft_putendl_fd("INIT ERROR", 2);
-		exit(40);
-	}
+		quit_error("fdf: mlx_init error ", errno, NULL);
 	con.wndw = mlx_new_window(con.ident, con.dims[0], con.dims[1], "fdf");
 	mlx_hook(con.wndw, 2, 0, key_event, (void*)&con);
 	mlx_loop(con.ident);

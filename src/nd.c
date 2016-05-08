@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 22:30:10 by liums             #+#    #+#             */
-/*   Updated: 2016/05/08 11:44:39 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/08 17:01:15 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ t_map	getpts(char *filename)
 	int		fd;
 
 	pts.dims.z = SUP_PTS_NB;
+	pts.dims.x = 0;
+	pts.dims.y = 0;
 	if (!(pts.pts = malloc(pts.dims.z * sizeof(t_coords))))
 		exit(10);
 	if ((fd = open(filename, 0)) < 0)
@@ -46,11 +48,7 @@ t_map	getpts(char *filename)
 	ft_putstr("PARSING -- ");
 	ft_putendl(filename);
 	if (parse_file(fd, &pts) < 0)
-	{
-		if (errno)
-			perror("fdf: parsing: ");
-		exit(13);
-	}
+		quit_error("fdf: parse error", errno ? errno : 0, NULL);
 	close(fd);
 	ft_putendl("PARSING -- parsed\n");
 	return (pts);
