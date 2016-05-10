@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/05/08 17:14:46 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/10 10:26:11 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,11 @@ void		quit_error(char *str, int error, void (exit_func)(void))
 static int	key_event(int key, void *infos)
 {
 	static int	c = 0;
-	static int	px = 0;
-	static int	py = 0;
+	int			dec[2];
 	t_mlx_datas	*con;
 
+	dec[0] = 0;
+	dec[1] = 0;
 	con = (t_mlx_datas *)infos;
 	if (key == 53)
 	{
@@ -48,13 +49,13 @@ static int	key_event(int key, void *infos)
 	{
 		if (*(con->files + c))
 		{
+			dec[0] = 0;
+			dec[1] = 0;
 			ft_putstr("KEY -- space -- new image: ");
 			ft_putendl(*(con->files + c));
-			con->next_img = draw_img(con, *(con->files + c));
+			con->next_img = draw_img(con, *(con->files + c), dec);
 			mlx_clear_window(con->ident, con->wndw);
 			mlx_put_image_to_window(con->ident, con->wndw, con->next_img, 0, 0);
-			px = 0;
-			py = 0;
 			c++;
 		}
 		else
@@ -63,15 +64,17 @@ static int	key_event(int key, void *infos)
 	else if (c && (key <= 126 && key >= 123))
 	{
 		if (key == 124)
-			px++;
+			dec[0]++;
 		else if (key == 123)
-			px--;
+			dec[0]--;
 		else if (key == 125)
-			py++;
+			dec[1]++;
 		else
-			py--;
+			dec[1]--;
+		ft_putnbr(draw_lines(con, *(con->files + c), dec));
+		ft_putendl(" pts out");
 		mlx_clear_window(con->ident, con->wndw);
-		mlx_put_image_to_window(con->ident, con->wndw, con->next_img, px, py);
+		mlx_put_image_to_window(con->ident, con->wndw, con->next_img, 0, 0);
 	}
 	else
 		ft_putendl(ft_strjoin("UNK KEY : ", ft_itoa(key)));

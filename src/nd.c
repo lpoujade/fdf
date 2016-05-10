@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 22:30:10 by liums             #+#    #+#             */
-/*   Updated: 2016/05/08 17:01:15 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/10 10:45:43 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,14 @@ void	*draw_img(void *o_con, char *filename)
 	int			ed;
 	t_mlx_datas	*con;
 	t_pixel		*addr;
+	int		dec[2] = {0, 0};
 
 	con = (t_mlx_datas*)o_con;
 	ft_putendl("MLX -- new img");
 	con->next_img = mlx_new_image(con->ident, con->dims[0], con->dims[1]);
 	ft_putendl("MLX -- mlx_get_data_addr");
 	addr = (t_pixel*)mlx_get_data_addr(con->next_img, &bpp, &size_line, &ed);
-	ft_putnbr(draw_lines(tr(getpts(filename), con->dims), con->dims, addr));
+	ft_putnbr(draw_lines(tr(getpts(filename), con->dims), con->dims, addr, dec));
 	ft_putendl(" pts out");
 	return (con->next_img);
 }
@@ -54,7 +55,7 @@ t_map	getpts(char *filename)
 	return (pts);
 }
 
-int		draw_lines(t_map pts, int *dims, t_pixel *addr)
+int		draw_lines(t_map pts, int *dims, t_pixel *addr, int dec[2])
 {
 	int		c;
 	int		outof;
@@ -65,16 +66,16 @@ int		draw_lines(t_map pts, int *dims, t_pixel *addr)
 	ft_putendl("\nDRAWING --");
 	while (c + 1 < pts.dims.z)
 	{
-		coord[0] = pts.pts[c].x;
-		coord[1] = pts.pts[c].y;
-		coord[2] = pts.pts[c + 1].x;
-		coord[3] = pts.pts[c + 1].y;
+		coord[0] = pts.pts[c].x + dec[0];
+		coord[1] = pts.pts[c].y + dec[1];
+		coord[2] = pts.pts[c + 1].x + dec[0];
+		coord[3] = pts.pts[c + 1].y + dec[1];
 		if (coord[2] > coord[0])
 			outof += line(coord, dims, addr);
 		if (c + pts.dims.x < pts.dims.z)
 		{
-			coord[2] = pts.pts[c + pts.dims.x].x;
-			coord[3] = pts.pts[c + pts.dims.x].y;
+			coord[2] = pts.pts[c + pts.dims.x].x + dec[0];
+			coord[3] = pts.pts[c + pts.dims.x].y + dec[1];
 			outof += line(coord, dims, addr);
 		}
 		c++;
