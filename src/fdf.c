@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/05/10 10:26:11 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/18 13:06:45 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,14 @@ void		quit_error(char *str, int error, void (exit_func)(void))
 static int	key_event(int key, void *infos)
 {
 	static int	c = 0;
-	int			dec[2];
+	static int	dec[2] = {0, 0};
 	t_mlx_datas	*con;
 
-	dec[0] = 0;
-	dec[1] = 0;
 	con = (t_mlx_datas *)infos;
 	if (key == 53)
 	{
 		ft_putendl("KEY -- esc -- exiting");
-		free(con->next_img);
+		mlx_destroy_image(con->ident, con->next_img);
 		mlx_destroy_window(con->ident, con->wndw);
 		exit(errno);
 	}
@@ -53,7 +51,7 @@ static int	key_event(int key, void *infos)
 			dec[1] = 0;
 			ft_putstr("KEY -- space -- new image: ");
 			ft_putendl(*(con->files + c));
-			con->next_img = draw_img(con, *(con->files + c), dec);
+			con->next_img = init_img(con, *(con->files + c));
 			mlx_clear_window(con->ident, con->wndw);
 			mlx_put_image_to_window(con->ident, con->wndw, con->next_img, 0, 0);
 			c++;
@@ -71,8 +69,25 @@ static int	key_event(int key, void *infos)
 			dec[1]++;
 		else
 			dec[1]--;
-		ft_putnbr(draw_lines(con, *(con->files + c), dec));
-		ft_putendl(" pts out");
+		redraw_img(con, dec);
+		mlx_clear_window(con->ident, con->wndw);
+		mlx_put_image_to_window(con->ident, con->wndw, con->next_img, 0, 0);
+	}
+	else if (key == 4)
+		mlx_clear_window(con->ident, con->wndw);
+	else if (c && (key == 26 || key == 28))
+	{
+		if (key == 28)
+		{
+			con->pts.dims.x /= 1.1;
+			con->pts.dims.y /= 1.1;
+		}
+		else
+		{
+			con->pts.dims.x *= 1.1;
+			con->pts.dims.y *= 1.1;
+		}
+		redraw_img(con, dec);
 		mlx_clear_window(con->ident, con->wndw);
 		mlx_put_image_to_window(con->ident, con->wndw, con->next_img, 0, 0);
 	}

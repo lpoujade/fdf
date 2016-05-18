@@ -6,29 +6,36 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 22:30:10 by liums             #+#    #+#             */
-/*   Updated: 2016/05/10 10:45:43 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/16 12:19:27 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	*draw_img(void *o_con, char *filename)
+void	*init_img(void *o_con, char *filename)
 {
 	int			bpp;
 	int			size_line;
 	int			ed;
 	t_mlx_datas	*con;
-	t_pixel		*addr;
 	int		dec[2] = {0, 0};
 
 	con = (t_mlx_datas*)o_con;
 	ft_putendl("MLX -- new img");
 	con->next_img = mlx_new_image(con->ident, con->dims[0], con->dims[1]);
 	ft_putendl("MLX -- mlx_get_data_addr");
-	addr = (t_pixel*)mlx_get_data_addr(con->next_img, &bpp, &size_line, &ed);
-	ft_putnbr(draw_lines(tr(getpts(filename), con->dims), con->dims, addr, dec));
+	con->addr = (t_pixel*)mlx_get_data_addr(con->next_img, &bpp, &size_line, &ed);
+	con->pts = getpts(filename);
+	ft_putnbr(draw_lines(tr(con->pts, con->dims), con->dims, con->addr, dec));
 	ft_putendl(" pts out");
 	return (con->next_img);
+}
+
+void	redraw_img(t_mlx_datas *con, int dec[2])
+{
+	ft_bzero(con->addr, con->dims[0] * con->dims[1] * sizeof(t_pixel));
+	ft_putnbr(draw_lines(con->pts, con->dims, con->addr, dec));
+	ft_putendl(" pts out");
 }
 
 t_map	getpts(char *filename)
