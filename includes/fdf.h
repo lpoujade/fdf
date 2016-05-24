@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 20:39:45 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/05/10 11:18:35 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/24 19:18:22 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <mlx.h>
 # include "libft.h"
 
-# define	SUP_PTS_NB 1000
+# define SUP_PTS_NB 1000
 
 /*
 ** KEYCODES (to defines)
@@ -46,7 +46,6 @@ typedef struct		s_map
 	t_coords		dims;
 }					t_map;
 
-
 typedef struct		s_mlx_datas
 {
 	void			*ident;
@@ -58,14 +57,15 @@ typedef struct		s_mlx_datas
 	int				dims[2];
 }					t_mlx_datas;
 
-void	quit_error(char *str, int error, void (exit_func)(void));
-void	*init_img(void *con, char *filename);
-void	redraw_img(t_mlx_datas *con, int dec[2]);
-int		draw_lines(t_map pts, int *dims, t_pixel *addr, int dec[2]);
-t_map	tr(t_map orig, int *dims);
-int		line(int const *coord, int *dim, t_pixel *first);
-int		parse_file(int fd, t_map *tofill);
-void	show_parse(char *file);
-t_map	getpts(char *filename);
+void				quit_error(char *str, int error, void (exit_func)(void));
+void				*init_img(void *con, char *filename);
+void				redraw_img(t_mlx_datas *con, int dec[2]);
+int					draw_lines(t_map pts, int *dims, t_pixel *addr, int dec[2]);
+t_map				tr(t_map orig, int *dims);
+int					line(int const *coord, int *dim, t_pixel *first);
+int					parse_file(int fd, t_map *tofill);
+void				show_parse(char *file);
+t_map				getpts(char *filename);
+int					key_event(int key, void *infos);
 
 #endif

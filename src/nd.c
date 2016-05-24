@@ -6,7 +6,7 @@
 /*   By: liums <lpoujade@student.42.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/25 22:30:10 by liums             #+#    #+#             */
-/*   Updated: 2016/05/16 12:19:27 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/24 19:20:02 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,19 @@
 
 void	*init_img(void *o_con, char *filename)
 {
-	int			bpp;
+	int			b;
 	int			size_line;
 	int			ed;
 	t_mlx_datas	*con;
-	int		dec[2] = {0, 0};
+	int			dec[2];
 
+	dec[0] = 0;
+	dec[1] = 0;
 	con = (t_mlx_datas*)o_con;
 	ft_putendl("MLX -- new img");
 	con->next_img = mlx_new_image(con->ident, con->dims[0], con->dims[1]);
 	ft_putendl("MLX -- mlx_get_data_addr");
-	con->addr = (t_pixel*)mlx_get_data_addr(con->next_img, &bpp, &size_line, &ed);
+	con->addr = (t_pixel*)mlx_get_data_addr(con->next_img, &b, &size_line, &ed);
 	con->pts = getpts(filename);
 	ft_putnbr(draw_lines(tr(con->pts, con->dims), con->dims, con->addr, dec));
 	ft_putendl(" pts out");
@@ -33,9 +35,10 @@ void	*init_img(void *o_con, char *filename)
 
 void	redraw_img(t_mlx_datas *con, int dec[2])
 {
+	ft_putchar('\r');
 	ft_bzero(con->addr, con->dims[0] * con->dims[1] * sizeof(t_pixel));
 	ft_putnbr(draw_lines(con->pts, con->dims, con->addr, dec));
-	ft_putendl(" pts out");
+	ft_putstr(" pts out          ");
 }
 
 t_map	getpts(char *filename)
@@ -70,7 +73,7 @@ int		draw_lines(t_map pts, int *dims, t_pixel *addr, int dec[2])
 
 	c = 0;
 	outof = 0;
-	ft_putendl("\nDRAWING --");
+	!dec[0] && !dec[1] ? ft_putendl("\nDRAWING --") : 0;
 	while (c + 1 < pts.dims.z)
 	{
 		coord[0] = pts.pts[c].x + dec[0];
@@ -87,6 +90,24 @@ int		draw_lines(t_map pts, int *dims, t_pixel *addr, int dec[2])
 		}
 		c++;
 	}
-	ft_putendl("DRAWING -- OK");
+	!dec[0] && !dec[1] ? ft_putendl("\nDRAWING -- OK") : 0;
 	return (outof);
+}
+
+t_map	tr(t_map orig, int *dims)
+{
+	int				c;
+	int				x;
+
+	c = 0;
+	while (c < orig.dims.z)
+	{
+		x = orig.pts[c].x;
+		orig.pts[c].x = ((orig.pts[c].x * dims[0]) / orig.dims.x) / 2;
+		orig.pts[c].y = ((orig.pts[c].y * dims[1]) / orig.dims.y) / 2;
+		orig.pts[c].x += ((orig.pts[c].x - orig.pts[c].y) / 1);
+		orig.pts[c].y = (-(orig.pts[c].z) + ((x + orig.pts[c].y) / 1.2));
+		c++;
+	}
+	return (orig);
 }

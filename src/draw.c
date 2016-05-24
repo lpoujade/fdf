@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/04/15 13:12:30 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/05/18 13:09:04 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/24 19:01:59 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,22 @@ static inline int	vh_lines(int const *coord, int *dim, t_pixel *first)
 	return (pts_out);
 }
 
+static inline void	sets(t_coords *xp, t_coords *yp, int const *coord, \
+		int *pts_out)
+{
+	xp->x = coord[0];
+	yp->x = coord[1];
+	xp->y = coord[2];
+	yp->y = coord[3];
+	*pts_out = 0;
+}
+
+static inline void	swaps(t_coords *xp, t_coords *yp)
+{
+	ft_iswap(&xp->x, &xp->y);
+	ft_iswap(&yp->x, &yp->y);
+}
+
 /*
 ** y/x p struct : yp.x = current y; yp.y = end y; yp.z = start y
 ** so : xp.x = X  / yp.x = Y		(y->z inclus)
@@ -59,20 +75,12 @@ int					line(int const *coord, int *dim, t_pixel *first)
 	int			rev;
 
 	rev = 0;
-	pts_out = 0;
-	xp.x = coord[0];
-	yp.x = coord[1];
-	xp.y = coord[2];
-	yp.y = coord[3];
+	sets(&xp, &yp, coord, &pts_out);
 	if (yp.x == yp.y || xp.x == xp.y)
 		return (vh_lines(coord, dim, first));
-	if ((ft_abs(yp.y - yp.x) > ft_abs(xp.y - xp.x)))
-		rev = 1;
+	rev = ((ft_abs(yp.y - yp.x) > ft_abs(xp.y - xp.x))) ? 1 : 0;
 	if ((xp.x > xp.y && !rev) || (rev && yp.x > yp.y))
-	{
-		ft_iswap(&xp.x, &xp.y);
-		ft_iswap(&yp.x, &yp.y);
-	}
+		swaps(&xp, &yp);
 	yp.z = yp.x;
 	xp.z = xp.x;
 	while ((xp.x <= xp.y && !rev) || (rev && yp.x <= yp.y))
@@ -81,28 +89,8 @@ int					line(int const *coord, int *dim, t_pixel *first)
 			pix_img((char*)first + ((xp.x * 4) + (dim[1] * (yp.x * 4))));
 		else
 			pts_out++;
-		if (!rev)
-			yp.x = yp.z + ((yp.y - yp.z) * (++xp.x - xp.z)) / (xp.y - xp.z);
-		else
-			xp.x = xp.z + ((xp.y - xp.z) * (++yp.x - yp.z)) / (yp.y - yp.z);
+		!rev ? yp.x = yp.z + ((yp.y - yp.z) * (++xp.x - xp.z)) / (xp.y - xp.z) :
+			(xp.x = xp.z + ((xp.y - xp.z) * (++yp.x - yp.z)) / (yp.y - yp.z));
 	}
 	return (pts_out);
-}
-
-t_map				tr(t_map orig, int *dims)
-{
-	int				c;
-	int				x;
-
-	c = 0;
-	while (c < orig.dims.z)
-	{
-		x = orig.pts[c].x;
-		orig.pts[c].x = ((orig.pts[c].x * dims[0]) / orig.dims.x) / 2;
-		orig.pts[c].y = ((orig.pts[c].y * dims[1]) / orig.dims.y) / 2;
-		orig.pts[c].x += ((orig.pts[c].x - orig.pts[c].y) / 1);
-		orig.pts[c].y = (-(orig.pts[c].z) + ((x + orig.pts[c].y) / 1.2));
-		c++;
-	}
-	return (orig);
 }

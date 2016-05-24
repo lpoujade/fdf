@@ -6,7 +6,7 @@
 #    By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/11 13:41:06 by lpoujade          #+#    #+#              #
-#    Updated: 2016/05/16 12:22:03 by lpoujade         ###   ########.fr        #
+#    Updated: 2016/05/24 19:17:46 by lpoujade         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ LDLIBS=-lft -lmlx
 
 LIB=libft/libft.a
 
-SRC=fdf.c parse.c draw.c show_parse.c nd.c
+SRC=main.c fdf.c parse.c draw.c show_parse.c nd.c
 OBJ=$(SRC:.c=.o)
 
 SRCS=$(addprefix $(SRCDIR)/,$(SRC))
