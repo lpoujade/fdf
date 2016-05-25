@@ -6,7 +6,7 @@
 #    By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/02/11 13:41:06 by lpoujade          #+#    #+#              #
-#    Updated: 2016/05/24 19:17:46 by lpoujade         ###   ########.fr        #
+#    Updated: 2016/05/25 15:21:53 by lpoujade         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CC=gcc
 CPPFLAGS=-Iincludes/ -Ilibft/includes -Imlx_src/
 CFLAGS=-Wall -Werror -Wextra -g
 
-LDFLAGS=-Llibft/ -Lmlx_src/
+LDFLAGS=-Llibft/ #-Lmlx_src/
 LDLIBS=-lft -lmlx
 # GNU/Linux
 # LDLIBS += -lXext -lX11

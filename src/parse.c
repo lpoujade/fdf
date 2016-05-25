@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/15 14:46:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/05/08 17:22:47 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/25 14:36:35 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,31 +50,37 @@ static inline int	get_nums(char *line, t_map *tofill, int varx, int varz)
 	return (ft_getndigits(tofill->pts[varz].z));
 }
 
+static inline void	shame(int *to_init, char **this, char **to_this)
+{
+	*to_init = 0;
+	*to_this = *this;
+}
+
 int					parse_file(int fd, t_map *tofill)
 {
 	int			gnl_ret;
 	char		*line;
+	char		*andise;
 	t_coords	vars;
 
 	vars.z = 0;
 	while ((gnl_ret = get_next_line(fd, &line)) > 0)
 	{
-		vars.x = 0;
+		shame(&vars.x, &line, &andise);
 		while (*line)
 		{
 			line += get_nums(line, tofill, vars.x, vars.z);
 			while (*line && !((ft_isdigit(*line) || *line == '-')
 						&& ((*(line - 1) == ' ') || *(line + 1) == ' ')))
-				line++;
-			vars.x++;
+				++line;
+			++vars.x;
 			if (++vars.z >= tofill->dims.z)
 				resize(&tofill->pts, &tofill->dims.z, tofill->dims.z * 2);
 		}
-		tofill->dims.y++;
+		++tofill->dims.y;
 		vars.x > tofill->dims.x ? tofill->dims.x = vars.x : 0;
+		free(andise);
 	}
-	if (gnl_ret < 0)
-		return (-1);
-	tofill->dims.z = vars.z;
-	return (tofill->dims.y * tofill->dims.x);
+	tofill->dims.z = (!(gnl_ret < 0)) ? vars.z : -1;
+	return (gnl_ret < 0 ? -1 : tofill->dims.y * tofill->dims.x);
 }

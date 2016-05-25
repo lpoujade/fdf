@@ -6,7 +6,7 @@
 /*   By: lpoujade <lpoujade@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 13:17:42 by lpoujade          #+#    #+#             */
-/*   Updated: 2016/05/24 19:19:25 by lpoujade         ###   ########.fr       */
+/*   Updated: 2016/05/25 15:54:05 by lpoujade         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ static inline void	quit(t_mlx_datas *con)
 {
 	ft_putendl("KEY -- esc -- exiting");
 	mlx_destroy_image(con->ident, con->next_img);
-	mlx_destroy_window(con->ident, con->wndw);
-	exit(errno);
+	exit(EXIT_SUCCESS);
 }
 
 static inline void	move(int c, int key, t_mlx_datas *con, int *dec)
@@ -49,7 +48,7 @@ static inline void	move(int c, int key, t_mlx_datas *con, int *dec)
 	}
 	else if (key == 4)
 		mlx_clear_window(con->ident, con->wndw);
-	else
+	else if (key != 49)
 		ft_putendl(ft_strjoin("UNK KEY : ", ft_itoa(key)));
 }
 
